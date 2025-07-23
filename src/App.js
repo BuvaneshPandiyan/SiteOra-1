@@ -12,7 +12,7 @@ import FAQ from './components/FAQ';
 import CTA from './components/CTA';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import BackToTopButton from './components/BackToTopButton';
+import BackToTopButton from './components/WhatsAppChatButton';
 import About from './components/AboutUs';
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
       </main>
       <About />
       <Footer />
-      <BackToTopButton />
+      <WhatsAppChatButton />
     </div>
   );
 }
