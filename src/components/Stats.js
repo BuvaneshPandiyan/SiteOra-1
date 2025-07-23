@@ -31,15 +31,17 @@ function Stats() {
   ];
 
   const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(null); // State to track which card is hovered
+  const [sectionIsVisible, setSectionIsVisible] = useState(false);
+  const [activeCardIndexForPopup, setActiveCardIndexForPopup] = useState(null); // Tracks which card's popup should be visible
+  const cardRefs = useRef([]); // To hold refs for each stat card
 
+  // Effect for main section animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsVisible(true);
+            setSectionIsVisible(true);
             observer.unobserve(entry.target); // Stop observing once visible
           }
         });
@@ -59,6 +61,65 @@ function Stats() {
       }
     };
   }, []);
+
+  // Effect for individual card popups based on intersection
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 767; // Define mobile breakpoint
+
+    if (!isMobile) return; // Only apply this for mobile
+
+    const observerOptions = {
+      root: null, // relative to the viewport
+      rootMargin: '0px',
+      threshold: 0.8, // Trigger when 80% of the item is visible
+    };
+
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const index = parseInt(entry.target.dataset.index, 10);
+        if (entry.isIntersecting) {
+          // If the card is in view, set it as the active popup
+          setActiveCardIndexForPopup(index);
+        } else {
+          // If the card leaves view, check if it was the active one and clear
+          if (activeCardIndexForPopup === index) {
+            setActiveCardIndexForPopup(null);
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe each card
+    cardRefs.current.forEach((card) => {
+      if (card) {
+        cardObserver.observe(card);
+      }
+    });
+
+    // Clean up
+    return () => {
+      cardRefs.current.forEach((card) => {
+        if (card) {
+          cardObserver.unobserve(card);
+        }
+      });
+    };
+  }, [activeCardIndexForPopup]); // Re-run if active popup changes to update logic
+
+  // Handle mouse enter/leave for desktop hover effect
+  const handleMouseEnter = (index) => {
+    // Only set hovered index if NOT on mobile (or if you want hover on desktop AND intersection on mobile)
+    if (window.innerWidth > 767) {
+      setActiveCardIndexForPopup(index);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (window.innerWidth > 767) {
+      setActiveCardIndexForPopup(null);
+    }
+  };
+
 
   return (
     <>
@@ -139,7 +200,7 @@ function Stats() {
           background-size: 60px 60px; /* Larger pattern for more impact */
           opacity: 0.6;
           z-index: 0;
-          animation: ${isVisible ? 'shimmerBackground 40s linear infinite alternate' : 'none'}; /* Slower, continuous shimmer */
+          animation: ${sectionIsVisible ? 'shimmerBackground 40s linear infinite alternate' : 'none'}; /* Slower, continuous shimmer */
         }
 
         /* --- Stat Card Styles --- */
@@ -160,7 +221,9 @@ function Stats() {
           animation: flipInY 1.2s ease-out forwards; /* Apply flip-in animation */
         }
 
-        .stat-card:hover {
+        /* Use .active class for popup trigger on mobile */
+        .stat-card:hover,
+        .stat-card.active-popup { /* Add active-popup class here */
           transform: translateY(-15px) scale(1.03) rotateX(5deg) rotateY(5deg); /* Lift, scale, and more pronounced 3D tilt */
           box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35), 0 0 0 8px rgba(99, 102, 241, 0.3); /* Stronger shadow and a vibrant indigo glow */
         }
@@ -197,7 +260,9 @@ function Stats() {
           opacity: 1;
         }
 
-        .stat-card:hover .stat-icon {
+        /* Use .active-popup for mobile icon animation */
+        .stat-card:hover .stat-icon,
+        .stat-card.active-popup .stat-icon {
           transform: scale(1.3) rotate(15deg); /* Even more pronounced scale and rotation on hover */
         }
 
@@ -259,7 +324,9 @@ function Stats() {
           }
         }
 
-        .stat-card:hover .hover-popup {
+        /* Apply popup styles to .active-popup and :hover */
+        .stat-card:hover .hover-popup,
+        .stat-card.active-popup .hover-popup { /* Add active-popup here */
           opacity: 1;
           visibility: visible;
           animation: popupEnter 0.4s forwards cubic-bezier(0.34, 1.56, 0.64, 1); /* Apply bounce-like entry */
@@ -283,7 +350,8 @@ function Stats() {
             left: 50%;
             transform: translateX(-50%) translateY(-100%);
           }
-          .stat-card:hover .hover-popup {
+          .stat-card:hover .hover-popup,
+          .stat-card.active-popup .hover-popup { /* Add active-popup here */
             transform: translateX(-50%) translateY(-110%); /* Adjust for smaller screens */
           }
         }
@@ -291,33 +359,34 @@ function Stats() {
 
       <section ref={sectionRef} className="py-20 professional-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20"> {/* Increased margin bottom */}
-            <h2 className={`text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight main-title-animation ${isVisible ? 'animate-in' : ''}`}>
+          <div className="text-center mb-20">
+            <h2 className={`text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight main-title-animation ${sectionIsVisible ? 'animate-in' : ''}`}>
               Our Guiding Principles
             </h2>
-            <p className={`text-xl text-gray-600 max-w-3xl mx-auto main-description-animation ${isVisible ? 'animate-in' : ''}`}>
+            <p className={`text-xl text-gray-600 max-w-3xl mx-auto main-description-animation ${sectionIsVisible ? 'animate-in' : ''}`}>
               The foundations upon which we build exceptional digital experiences.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"> {/* Increased gap between cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {statsData.map((stat, index) => (
               <div
                 key={index}
-                className={`stat-card ${isVisible ? 'animate-in' : ''}`}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                // Assign ref and dataset index for Intersection Observer
+                ref={(el) => (cardRefs.current[index] = el)}
+                data-index={index}
+                className={`stat-card ${sectionIsVisible ? 'animate-in' : ''} ${activeCardIndexForPopup === index ? 'active-popup' : ''}`}
+                onMouseEnter={() => handleMouseEnter(index)} // Desktop only hover
+                onMouseLeave={handleMouseLeave} // Desktop only hover
               >
                 {stat.icon && <FontAwesomeIcon icon={stat.icon} className="stat-icon" />}
                 <div className="stat-value">{stat.value}</div>
                 <div className="stat-label">{stat.label}</div>
 
-                {/* Hover Popup */}
-                {hoveredIndex === index && (
-                  <div className="hover-popup">
-                    {stat.note}
-                  </div>
-                )}
+                {/* Always render the popup for position, control visibility with CSS */}
+                <div className="hover-popup">
+                  {stat.note}
+                </div>
               </div>
             ))}
           </div>
