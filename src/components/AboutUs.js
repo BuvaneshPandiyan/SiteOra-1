@@ -3,7 +3,7 @@ import 'animate.css'; // Ensure animate.css is imported
 import { useInView } from 'react-intersection-observer'; // Import useInView hook
 // IMPORTANT: Please adjust the paths below if your image files are located elsewhere.
 import OfficeImage from './Office.png'; // This will still be used for team member placeholders if needed, but not for the main section carousel
-import BuvaneshwarImage from './Buvaneshwar.jpeg';
+import BuvaneshwarImage from './Buvaneshwar.jpg';
 
 // Import carousel images
 import image1 from './image1.png';
