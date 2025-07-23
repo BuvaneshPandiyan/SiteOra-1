@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Services() {
   const servicesData = [
@@ -47,15 +47,15 @@ function Services() {
       ],
     },
     {
-    icon: "fas fa-handshake",
-    title: "Direct Contact & Information Websites",
-    description: "We specialize in creating engaging online presences designed purely for information dissemination and direct client contact. Think captivating landing pages, detailed service showcases, and elegant online brochures.",
-    features: [
+      icon: "fas fa-handshake",
+      title: "Direct Contact & Information Websites",
+      description: "We specialize in creating engaging online presences designed purely for information dissemination and direct client contact. Think captivating landing pages, detailed service showcases, and elegant online brochures.",
+      features: [
         "Interactive Forms (via third-party services)",
         "Clear Call-to-Action Design",
         "Integrated Social Media Feeds",
         "Easy-to-Navigate Information Architecture",
-    ],
+      ],
     },
     {
       icon: "fas fa-palette",
@@ -70,247 +70,295 @@ function Services() {
     },
   ];
 
+  // State to track if the component has been scrolled into view
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = document.getElementById('services-section');
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        // Trigger animation when the section is 70% in view
+        if (rect.top < window.innerHeight * 0.7 && rect.bottom > 0) {
+          setInView(true);
+        } else {
+          setInView(false); // Reset if scrolled out of view
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position on mount
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      {/* Integrated CSS Styles */}
-      <style jsx>{`
-        /* --- General Animations --- */
-        @keyframes fadeInSlideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes pulseBackground {
-          0% { opacity: 0.5; }
-          50% { opacity: 0.7; }
-          100% { opacity: 0.5; }
-        }
-
-        @keyframes bounceIn {
-          0%, 20%, 40%, 60%, 80%, 100% {
-            -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-          }
-          0% {
-            opacity: 0;
-            -webkit-transform: scale3d(.3, .3, .3);
-            transform: scale3d(.3, .3, .3);
-          }
-          20% {
-            -webkit-transform: scale3d(1.1, 1.1, 1.1);
-            transform: scale3d(1.1, 1.1, 1.1);
-          }
-          40% {
-            -webkit-transform: scale3d(.9, .9, .9);
-            transform: scale3d(.9, .9, .9);
-          }
-          60% {
-            opacity: 1;
-            -webkit-transform: scale3d(1.03, 1.03, 1.03);
-            transform: scale3d(1.03, 1.03, 1.03);
-          }
-          80% {
-            -webkit-transform: scale3d(.97, .97, .97);
-            transform: scale3d(.97, .97, .97);
-          }
-          100% {
-            opacity: 1;
-            -webkit-transform: scale3d(1, 1, 1);
-            transform: scale3d(1, 1, 1);
-          }
-        }
-
-        /* --- Section Background --- */
-        .animated-bg-gradient {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          animation: pulseBackground 8s infinite ease-in-out;
-        }
-
-        /* --- Service Card Styles --- */
-        .service-card {
-          position: relative;
-          overflow: hidden;
-          transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
-          animation: fadeInSlideUp 0.8s ease-out forwards;
-          opacity: 0; /* Hidden initially for animation */
-        }
-
-        .service-card:hover {
-          transform: translateY(-10px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3), /* Deeper shadow */
-                      0 0 0 8px rgba(79, 70, 229, 0.1); /* More pronounced glow */
-          z-index: 10; /* Bring card to front on hover */
-        }
-
-        /* --- Icon Container Styles --- */
-        .icon-container {
-          background: linear-gradient(45deg, #4f46e5, #a855f7); /* Vibrant gradient */
-          transition: transform 0.4s ease-out, background 0.4s ease-out;
-        }
-
-        .service-card:hover .icon-container {
-          transform: rotate(10deg) scale(1.1); /* More pronounced rotation and scale */
-          background: linear-gradient(45deg, #a855f7, #4f46e5); /* Gradient shift on hover */
-        }
-
-        /* --- Checkmark Icons --- */
-        .feature-icon {
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .service-card:hover .feature-icon {
-            transform: translateX(5px); /* Slide checkmark on hover */
-        }
-
-        /* --- Initial Load Animation Delays for Header --- */
-        .animate-delay-100 { animation-delay: 0.1s; }
-        .animate-delay-200 { animation-delay: 0.2s; }
-        .animate-delay-300 { animation-delay: 0.3s; } /* New delay for initial load */
-
-        /* --- Responsive Adjustments for Mobile Screens --- */
-
-        /* Target screens up to 767px wide (typical small/medium mobile) */
-        @media (max-width: 767px) {
-          .py-16 {
-            padding-top: 3rem; /* Reduce top padding */
-            padding-bottom: 3rem; /* Reduce bottom padding */
-          }
-
-          .text-4xl {
-            font-size: 2.5rem; /* Slightly smaller heading on mobile */
-          }
-
-          .md\\:text-5xl {
-            font-size: 3rem; /* Ensure it scales down if it's the base size */
-          }
-
-          .text-xl {
-            font-size: 1.125rem; /* Smaller paragraph text */
-          }
-
-          .service-card {
-            padding: 1.5rem; /* Adjust card padding for smaller screens */
-          }
-
-          .service-card:hover {
-            transform: translateY(-5px) scale(1.01); /* Less aggressive hover effect on mobile */
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2), /* Smaller shadow */
-                        0 0 0 4px rgba(79, 70, 229, 0.05); /* Smaller glow */
-          }
-
-          .icon-container {
-            width: 4rem; /* Smaller icon container */
-            height: 4rem;
-            font-size: 1.5rem; /* Smaller icon size */
-            margin-bottom: 1rem; /* Adjust margin */
-          }
-
-          .service-card:hover .icon-container {
-            transform: rotate(5deg) scale(1.05); /* Less pronounced rotation and scale */
-          }
-
-          .text-2xl {
-            font-size: 1.75rem; /* Smaller service title */
-          }
-
-          .text-gray-700 {
-            font-size: 0.95rem; /* Slightly smaller description text */
-          }
-
-          .space-y-3 > li {
-            font-size: 0.9rem; /* Smaller feature text */
-          }
-        }
-
-        /* Target screens up to 480px wide (very small mobile) */
-        @media (max-width: 480px) {
-          .py-16 {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-          }
-
-          .text-4xl {
-            font-size: 2rem;
-          }
-
-          .md\\:text-5xl {
-            font-size: 2.5rem;
-          }
-
-          .text-xl {
-            font-size: 1rem;
-          }
-
-          .icon-container {
-            width: 3.5rem;
-            height: 3.5rem;
-            font-size: 1.25rem;
-          }
-
-          .text-2xl {
-            font-size: 1.5rem;
-          }
-
-          .text-gray-700, .space-y-3 > li {
-            font-size: 0.875rem;
-          }
-
-          /* Ensure horizontal padding is appropriate for very small screens */
-          .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-          }
-        }
-      `}</style>
-
-      <section id="services" className="py-16 bg-gray-50 relative overflow-hidden">
+      {/* Ensure Animate.css and Font Awesome are linked in your public/index.html or equivalent:
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" xintegrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEbMoFmJAyDG0f/z0+G+s/vHwWw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      */}
+      <section
+        id="services-section"
+        className={`py-20 md:py-32 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden
+          animate__animated ${inView ? 'animate__fadeIn' : 'opacity-0'}`}
+      >
         {/* Subtle Background Overlay with animation */}
-        <div className="absolute inset-0 animated-bg-gradient -z-10"></div>
+        <div className="absolute inset-0 animated-bg-gradient -z-10 motion-reduce:animate-none"></div>
+        {/* Animated background blobs */}
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob motion-reduce:animate-none"></div>
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
+        <div className="absolute top-1/4 left-1/3 w-56 h-56 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
+
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-indigo-600 font-semibold uppercase tracking-wide animate-fade-in-up">OUR SERVICES</span>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-3 mb-4 leading-tight animate-fade-in-up animate-delay-100">
-              Elevate Your Online Presence
+          <div className="text-center mb-16 md:mb-24">
+            <span
+              className={`text-blue-600 font-extrabold uppercase tracking-widest block mb-3 text-lg md:text-xl
+                animate__animated ${inView ? 'animate__fadeInUp' : 'opacity-0'} motion-safe:animate-text-float-subtle motion-reduce:animate-none`}
+            >
+              OUR SERVICES
+            </span>
+            <h2
+              className={`text-4xl md:text-6xl font-extrabold text-gray-900 mt-3 mb-6 leading-tight drop-shadow-lg
+                animate__animated ${inView ? 'animate__fadeInRight' : 'opacity-0'} animate__delay-0s motion-safe:animate-text-wave motion-reduce:animate-none`}
+            >
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-text-glow motion-reduce:animate-none">Elevate Your</span> Online Presence
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-200">
+            <p
+              className={`text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto
+                animate__animated ${inView ? 'animate__fadeIn' : 'opacity-0'} animate__delay-1s motion-safe:animate-text-pulse motion-reduce:animate-none`}
+            >
               We deliver modern, high-performance web solutions designed to make your business shine.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {servicesData.map((service, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-lg service-card"
-                style={{ animationDelay: `${0.15 * index + 0.3}s` }} // Staggered animation with more pronounced delay
+                className={`bg-white rounded-3xl shadow-xl border border-gray-100 p-8 relative overflow-hidden
+                  transition-all duration-500 ease-in-out group
+                  hover:shadow-2xl hover:border-blue-400 transform hover:scale-[1.03] hover:rotate-1
+                  animate__animated ${inView ? 'animate__fadeInUp' : 'opacity-0'} motion-reduce:animate-none`}
+                style={{ animationDelay: inView ? `${0.15 * index + 0.5}s` : '0s' }} // Staggered animation
               >
-                <div className="p-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl mb-6 shadow-md icon-container">
-                    <i className={service.icon}></i>
-                  </div>
-                  <h3 className="text-2xl font-extrabold text-gray-900 mb-4 leading-snug">{service.title}</h3>
-                  <p className="text-gray-700 mb-6 leading-relaxed">{service.description}</p>
-                  <ul className="space-y-3">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-gray-800">
-                        <i className="fas fa-check-circle text-indigo-500 mr-3 text-lg feature-icon"></i>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Animated background circle on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10"></div>
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-200 rounded-full opacity-0 group-hover:opacity-50 transition-all duration-500 ease-in-out group-hover:scale-150 -z-10"></div>
+
+
+                <div
+                  className={`w-20 h-20 rounded-2xl flex items-center justify-center text-white text-3xl mb-8 shadow-lg
+                    bg-gradient-to-br from-blue-500 to-indigo-600 transition-all duration-300 ease-in-out
+                    group-hover:rotate-6 group-hover:scale-110 group-hover:from-indigo-600 group-hover:to-blue-600
+                    motion-safe:animate-float motion-reduce:animate-none`}
+                  style={{ animationDuration: '3s', animationDelay: `${0.1 * index}s` }} // Adjust float speed and stagger
+                >
+                  <i className={service.icon}></i>
                 </div>
+                <h3
+                  className={`text-2xl font-extrabold text-gray-900 mb-4 leading-snug group-hover:text-blue-700 transition-colors duration-300
+                    animate__animated ${inView ? 'animate__bounceIn' : 'opacity-0'} motion-safe:animate-text-jiggle motion-reduce:animate-none`}
+                  style={{ animationDelay: inView ? `${0.15 * index + 0.8}s` : '0s' }} // Staggered delay for title
+                >
+                  {service.title}
+                </h3>
+                <p
+                  className={`text-gray-700 mb-6 leading-relaxed text-opacity-90 tracking-normal
+                    animate__animated ${inView ? 'animate__fadeInLeft' : 'opacity-0'} motion-safe:animate-text-breathe motion-reduce:animate-none`}
+                  style={{ animationDelay: inView ? `${0.15 * index + 1.0}s` : '0s' }} // Staggered delay for description
+                >
+                  {service.description}
+                </p>
+                <ul
+                  className={`space-y-3
+                    animate__animated ${inView ? 'animate__fadeInUp' : 'opacity-0'} motion-reduce:animate-none`}
+                  style={{ animationDelay: inView ? `${0.15 * index + 1.2}s` : '0s' }} // Staggered delay for features
+                >
+                  {service.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center text-gray-800">
+                      <i
+                        className={`fas fa-check-circle text-blue-500 mr-3 text-xl transition-transform duration-200 ease-in-out
+                          group-hover:translate-x-1 motion-safe:animate-checkmark-pulse motion-reduce:animate-none`}
+                      ></i>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Integrated CSS Styles for animations */}
+      <style jsx>{`
+        /* --- General Animations --- */
+        @keyframes pulseBackground {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-8px) rotate(2deg);
+          }
+        }
+
+        /* New continuous text animations */
+        @keyframes text-float-subtle {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-2px);
+          }
+        }
+
+        @keyframes text-wave {
+          0%, 100% {
+            transform: rotate(0deg);
+          }
+          25% {
+            transform: rotate(0.5deg);
+          }
+          75% {
+            transform: rotate(-0.5deg);
+          }
+        }
+
+        @keyframes text-pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.005);
+            opacity: 0.95;
+          }
+        }
+
+        @keyframes text-jiggle {
+          0%, 100% {
+            transform: translateX(0px) rotate(0deg);
+          }
+          25% {
+            transform: translateX(1px) rotate(0.2deg);
+          }
+          75% {
+            transform: translateX(-1px) rotate(-0.2deg);
+          }
+        }
+
+        @keyframes text-breathe {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.002);
+          }
+        }
+
+        @keyframes checkmark-pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
+        /* Animated Blobs */
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+
+        .animate-blob {
+          animation: blob 7s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+
+        /* Text Glow for 'Elevate Your' */
+        @keyframes text-glow {
+          0%, 100% {
+            text-shadow: 0 0 5px rgba(100, 116, 139, 0.3), 0 0 10px rgba(129, 140, 248, 0.2);
+          }
+          50% {
+            text-shadow: 0 0 15px rgba(100, 116, 139, 0.6), 0 0 25px rgba(129, 140, 248, 0.4);
+          }
+        }
+
+
+        .animate-float {
+          animation: float 3s infinite ease-in-out;
+        }
+
+        .animate-text-float-subtle {
+          animation: text-float-subtle 3s infinite ease-in-out;
+        }
+
+        .animate-text-wave {
+          animation: text-wave 5s infinite ease-in-out;
+        }
+
+        .animate-text-pulse {
+          animation: text-pulse 4s infinite ease-in-out;
+        }
+
+        .animate-text-jiggle {
+          animation: text-jiggle 2s infinite ease-in-out;
+        }
+
+        .animate-text-breathe {
+          animation: text-breathe 3s infinite ease-in-out;
+        }
+
+        .animate-checkmark-pulse {
+          animation: checkmark-pulse 1.5s infinite ease-in-out;
+        }
+
+        /* --- Section Background --- */
+        .animated-bg-gradient {
+          background: linear-gradient(135deg, #e0f7fa 0%, #d4eaf0 100%); /* Very light, calming blue gradient */
+          background-size: 200% 200%; /* Make background larger for movement */
+          animation: pulseBackground 10s infinite ease-in-out; /* Slower, smoother pulse */
+        }
+        .motion-reduce .animated-bg-gradient {
+          animation: none; /* Disable animation for reduced motion */
+        }
+      `}</style>
     </>
   );
 }
