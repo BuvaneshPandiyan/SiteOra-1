@@ -12,7 +12,7 @@ import FAQ from './components/FAQ';
 import CTA from './components/CTA';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import BackToTopButton from './components/WhatsAppChatButton';
+import WhatsAppChatButton from './components/WhatsAppChatButton';
 import About from './components/AboutUs';
 
 function App() {
