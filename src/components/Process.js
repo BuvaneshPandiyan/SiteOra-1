@@ -52,6 +52,7 @@ function Process() {
   // State for managing the consultation modal
   const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
   const [selectedDateTime, setSelectedDateTime] = useState(null); // State to store selected date and time
+  const [currentStep, setCurrentStep] = useState('date'); // 'date' or 'time'
 
   // Scroll animations for process cards (left/right slide-in)
   useEffect(() => {
@@ -90,16 +91,42 @@ function Process() {
   const openConsultationModal = () => {
     setIsConsultationModalOpen(true);
     setSelectedDateTime(null); // Reset selected date when opening
+    setCurrentStep('date'); // Always start with date selection
   };
 
   // Function to close the consultation modal
   const closeConsultationModal = () => {
     setIsConsultationModalOpen(false);
+    setCurrentStep('date'); // Reset step when closing modal
   };
 
   // Function to handle date and time selection
   const handleDateTimeChange = (date) => {
-    setSelectedDateTime(date);
+    if (currentStep === 'date') {
+      // When a date is selected, store it and move to time selection
+      const newDateTime = new Date(date);
+      // Preserve existing time if any, otherwise set to a default (e.g., start of day or current time)
+      if (selectedDateTime) {
+        newDateTime.setHours(selectedDateTime.getHours());
+        newDateTime.setMinutes(selectedDateTime.getMinutes());
+      } else {
+        newDateTime.setHours(new Date().getHours());
+        newDateTime.setMinutes(new Date().getMinutes());
+      }
+      setSelectedDateTime(newDateTime);
+      setCurrentStep('time');
+    } else if (currentStep === 'time') {
+      // When a time is selected, combine it with the previously selected date
+      if (selectedDateTime) {
+        const newDateTime = new Date(selectedDateTime);
+        newDateTime.setHours(date.getHours());
+        newDateTime.setMinutes(date.getMinutes());
+        setSelectedDateTime(newDateTime);
+      } else {
+        // Fallback: if somehow date wasn't set, use current date with selected time
+        setSelectedDateTime(date);
+      }
+    }
   };
 
   // Function to generate and open WhatsApp chat
@@ -124,12 +151,210 @@ function Process() {
       window.open(whatsappUrl, '_blank');
       closeConsultationModal(); // Close modal after opening WhatsApp
     } else {
-      alert("Please select a date and time for your consultation.");
+      // Replaced alert with a simple console log as alerts are not allowed in canvas
+      console.log("Please select a date and time for your consultation.");
     }
   };
 
   return (
-    <section id="process" className="py-20 bg-gradient-to-br from-gray-50 to-indigo-100 overflow-hidden">
+    <section id="process" className="py-20 bg-gradient-to-br from-gray-50 to-indigo-100 overflow-hidden font-sans">
+      {/* Tailwind CSS animation for slide-in from left */}
+      <style>
+        {`
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes zoomIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-slideInLeft {
+          animation: slideInLeft 0.7s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+          animation: slideInRight 0.7s ease-out forwards;
+        }
+
+        .animate-zoomIn {
+          animation: zoomIn 0.3s ease-out forwards;
+        }
+
+        /* Custom styles for react-datepicker to ensure mobile responsiveness */
+        .react-datepicker-popper {
+            z-index: 9999; /* Ensure it's above other elements */
+            /* Force centering for the popper */
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            /* Ensure it doesn't overflow on small screens */
+            max-width: 95vw; /* Max width relative to viewport width */
+            width: fit-content; /* Adjust width to content, but respect max-width */
+        }
+
+        .react-datepicker {
+            font-family: "Inter", sans-serif;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            border: 1px solid #e2e8f0; /* border-gray-200 */
+            width: auto; /* Allow content to dictate width */
+            max-width: 100%; /* Ensure it doesn't exceed popper width */
+            margin: 0 auto; /* Center the calendar within its container */
+            display: flex; /* Use flexbox for internal centering */
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center horizontally */
+        }
+
+        .react-datepicker__header {
+            background-color: #f8fafc; /* gray-50 */
+            border-bottom: 1px solid #e2e8f0; /* border-gray-200 */
+            padding-top: 0.75rem; /* py-3 */
+        }
+
+        .react-datepicker__current-month,
+        .react-datepicker-time__header,
+        .react-datepicker-year-header {
+            font-weight: 700; /* font-bold */
+            color: #1a202c; /* gray-900 */
+            margin-bottom: 0.5rem; /* mb-2 */
+        }
+
+        .react-datepicker__day-name {
+            color: #4a5568; /* gray-700 */
+            font-weight: 600; /* font-semibold */
+        }
+
+        .react-datepicker__day--selected,
+        .react-datepicker__day--keyboard-selected,
+        .react-datepicker__time-list-item--selected {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
+            border-radius: 0.25rem; /* rounded-md */
+        }
+
+        .react-datepicker__day--selected:hover,
+        .react-datepicker__day--keyboard-selected:hover,
+        .react-datepicker__time-list-item--selected:hover {
+            background-color: #4338ca; /* indigo-700 */
+        }
+
+        .react-datepicker__day:hover,
+        .react-datepicker__time-list-item:hover {
+            background-color: #e0e7ff; /* indigo-100 */
+            border-radius: 0.25rem; /* rounded-md */
+        }
+
+        .react-datepicker__day--outside-month {
+            color: #a0aec0; /* gray-400 */
+        }
+
+        .react-datepicker__navigation--previous,
+        .react-datepicker__navigation--next {
+            top: 10px;
+            border: none;
+            background: none;
+        }
+
+        .react-datepicker__navigation-icon::before {
+            border-color: #4f46e5; /* indigo-600 */
+            border-width: 2px 2px 0 0;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+        }
+
+        .react-datepicker__navigation--previous .react-datepicker__navigation-icon::before {
+            transform: rotate(-135deg);
+        }
+
+        .react-datepicker__navigation--next .react-datepicker__navigation-icon::before {
+            transform: rotate(45deg);
+        }
+
+        .react-datepicker__input-container {
+            width: 100%; /* Ensure the input takes full width */
+        }
+
+        .react-datepicker__input-container input {
+            width: 100%;
+            padding: 0.75rem 1rem; /* p-3, px-4 */
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 1rem; /* text-base */
+            color: #1f2937; /* gray-800 */
+            transition: all 0.2s ease-in-out;
+            text-align: center; /* Center the text in the input */
+        }
+
+        .react-datepicker__input-container input:focus {
+            outline: none;
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* ring-indigo-500 */
+        }
+
+        /* Time picker specific styles */
+        .react-datepicker__time-container {
+            border-left: 1px solid #e2e8f0; /* border-gray-200 */
+            width: 100%; /* Ensure time picker takes full width */
+        }
+
+        .react-datepicker__time {
+            width: 100%; /* Ensure time picker content takes full width */
+        }
+
+        .react-datepicker__time-box {
+            width: 100%; /* Ensure time box takes full width */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center time list */
+        }
+
+        .react-datepicker__time-list {
+            padding-right: 0; /* Remove default padding */
+            width: 100%; /* Ensure list takes full width */
+            max-height: 200px; /* Limit height for scrollability */
+            overflow-y: auto; /* Add scroll if needed */
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+        .react-datepicker__time-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .react-datepicker__time-list-item {
+            padding: 0.5rem 0.75rem; /* py-2 px-3 */
+            font-size: 0.9rem;
+            color: #4a5568; /* gray-700 */
+            text-align: center; /* Center time items */
+        }
+        `}
+      </style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-indigo-600 font-semibold uppercase tracking-wider">OUR PROCESS</span>
@@ -173,10 +398,10 @@ function Process() {
               key={step.step}
               data-index={index}
               className="group bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center border border-gray-200 process-card
-                          transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-indigo-400"
+                           transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-indigo-400"
             >
               <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md mb-4
-                              transition-all duration-300 group-hover:scale-110 group-hover:from-indigo-600 group-hover:to-purple-700">
+                               transition-all duration-300 group-hover:scale-110 group-hover:from-indigo-600 group-hover:to-purple-700">
                 <FontAwesomeIcon icon={step.icon} />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-indigo-700 transition-colors duration-300">
@@ -194,7 +419,7 @@ function Process() {
             Let's discuss your vision and turn it into a captivating digital experience.
           </p>
           <button
-            onClick={openConsultationModal} // Changed from <a> to <button> and added onClick handler
+            onClick={openConsultationModal}
             className="inline-block px-10 py-4 bg-indigo-600 text-white font-semibold rounded-full shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105"
           >
             Get a Free Consultation
@@ -206,28 +431,52 @@ function Process() {
       {isConsultationModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md relative animate-zoomIn">
+            {/* Close Button */}
             <button
               onClick={closeConsultationModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              aria-label="Close"
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </button>
+
             <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Schedule Your Free Consultation</h2>
-            <p className="text-gray-700 mb-6 text-center">Select your preferred date and time:</p>
-            
+            <p className="text-gray-700 mb-6 text-center">
+              {currentStep === 'date' ? 'Step 1: Select your preferred date:' : 'Step 2: Select your preferred time:'}
+            </p>
+
             <div className="flex justify-center mb-6">
-              <DatePicker
-                selected={selectedDateTime}
-                onChange={handleDateTimeChange}
-                showTimeSelect
-                dateFormat="Pp"
-                minDate={new Date()} // Prevents selecting past dates
-                inline // Displays calendar directly
-                className="custom-datepicker" // Custom class for potential styling
-              />
+              {currentStep === 'date' && (
+                <DatePicker
+                  selected={selectedDateTime}
+                  onChange={handleDateTimeChange}
+                  dateFormat="PP" // Only date format
+                  minDate={new Date()} // Prevents selecting past dates
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-center"
+                  popperPlacement="bottom-end"
+                  placeholderText="Click to select date"
+                  inline // Display calendar directly for date selection
+                />
+              )}
+
+              {currentStep === 'time' && (
+                <DatePicker
+                  selected={selectedDateTime}
+                  onChange={handleDateTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly // Important: only show time picker
+                  timeFormat="p" // Time format (e.g., 9:30 PM)
+                  timeIntervals={15} // Example: 15-minute intervals
+                  dateFormat="p" // Display only time in input
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-center"
+                  popperPlacement="bottom-end"
+                  placeholderText="Click to select time"
+                  inline // Display time picker directly for time selection
+                />
+              )}
             </div>
 
-            {selectedDateTime && (
+            {selectedDateTime && (currentStep === 'time' || (currentStep === 'date' && selectedDateTime)) && (
               <p className="text-center text-lg text-indigo-700 font-medium mb-6">
                 You selected: {selectedDateTime.toLocaleDateString('en-IN', {
                   weekday: 'short',
@@ -245,7 +494,7 @@ function Process() {
             <button
               onClick={handleScheduleConsultation}
               className="w-full px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!selectedDateTime} // Disable button if no date/time is selected
+              disabled={!selectedDateTime || currentStep === 'date'} // Disable button if no time is selected or still on date step
             >
               Confirm & Connect on WhatsApp
             </button>
