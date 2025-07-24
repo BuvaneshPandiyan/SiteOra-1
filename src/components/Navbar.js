@@ -28,7 +28,7 @@ function Navbar() {
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-              <a href="#services" onClick={(e) => handleScroll(e, '#services')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Services</a>
+              <a href="#services" onClick={(e) => handleScroll(e, '#services-section')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Services</a>
               <a href="#portfolio" onClick={(e) => handleScroll(e, '#portfolio')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portfolio</a>
               <a href="#pricing" onClick={(e) => handleScroll(e, '#pricing')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
               <a href="#contact" onClick={(e) => handleScroll(e, '#contact')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>

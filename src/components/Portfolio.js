@@ -40,6 +40,10 @@ function Portfolio() {
     },
   ];
 
+  // WhatsApp link with a custom, visionary message
+  const visionaryWhatsappMessage = encodeURIComponent("I have a vision for my digital presence and I'm ready to build it with you. Let's discuss how we can create something truly impactful!");
+  const visionaryWhatsappLink = `https://wa.me/7338816479?text=${visionaryWhatsappMessage}`;
+
   return (
     <>
       <style jsx>{`
@@ -128,7 +132,12 @@ function Portfolio() {
           </div>
 
           <div className="text-center">
-            <a href="#contact" className="inline-block px-8 py-3 gradient-bg text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+            <a
+              href={visionaryWhatsappLink} // Updated href to WhatsApp link
+              target="_blank" // Open in a new tab
+              rel="noopener noreferrer" // Security best practice for target="_blank"
+              className="inline-block px-8 py-3 gradient-bg text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               Let's Build Your Vision
             </a>
           </div>

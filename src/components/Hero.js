@@ -49,6 +49,10 @@ function Hero() {
     return () => clearTimeout(timeoutId); // Cleanup on component unmount
   }, []); // Empty dependency array means this runs once on mount
 
+  // WhatsApp link with pre-filled message
+  const whatsappMessage = encodeURIComponent("Hello, I'm interested in crafting digital masterpieces like web development, e-commerce, UI/UX design, SEO optimization, and mobile apps. Can you tell me more?");
+  const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
+
   return (
     <section id="home" className="relative overflow-hidden py-20 md:py-32 bg-gradient-to-br from-indigo-50 to-purple-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -63,7 +67,9 @@ function Hero() {
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start">
               <a
-                href="#contact"
+                href={whatsappLink} // Updated href to WhatsApp link
+                target="_blank" // Open in a new tab
+                rel="noopener noreferrer" // Security best practice for target="_blank"
                 className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-indigo-300"
               >
                 Get Started

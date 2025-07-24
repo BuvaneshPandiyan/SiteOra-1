@@ -4,7 +4,8 @@ import { useInView } from 'react-intersection-observer'; // Import useInView hoo
 // IMPORTANT: Please adjust the paths below if your image files are located elsewhere.
 import OfficeImage from './Office.png'; // This will still be used for team member placeholders if needed, but not for the main section carousel
 import BuvaneshwarImage from './Buvaneshwar.jpg';
-
+import MonikaImage from './Monika.jpg';
+import AyeshaImage from './Ayesha.jpg';
 // Import carousel images
 import image1 from './image1.png';
 import image2 from './image2.png';
@@ -299,7 +300,7 @@ function About() {
                       Buvaneshwar leads our development team, specializing in creating high-performance, scalable web solutions. He is passionate about clean code and cutting-edge technologies.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-linkedin-in"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-instagram"></i></a>
                     </div>
@@ -311,7 +312,7 @@ function About() {
               <div className={`flip-card ${teamInView ? 'animate__animated animate__zoomIn animate__delay-0-7s' : ''}`}>
                 <div className="flip-card-inner">
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
-                    <img src={OfficeImage} alt="Monika" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-indigo-400 shadow-lg glow" />
+                    <img src={MonikaImage} alt="Monika" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-indigo-400 shadow-lg glow" />
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Monika</h4>
                     <p className="text-purple-600 font-semibold mb-3 text-lg">Creative Designer</p>
                     <p className="text-gray-700 text-base leading-relaxed">
@@ -325,7 +326,7 @@ function About() {
                       Monika is our creative powerhouse, ensuring every user interaction is seamless and aesthetically pleasing. Her designs bring our applications to life.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-dribbble"></i></a>
+                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-instagram"></i></a>
                     </div>
@@ -337,7 +338,7 @@ function About() {
               <div className={`flip-card ${teamInView ? 'animate__animated animate__zoomIn animate__delay-0-9s' : ''}`}>
                 <div className="flip-card-inner">
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
-                    <img src={OfficeImage} alt="Ayesha" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-purple-400 shadow-lg glow" />
+                    <img src={AyeshaImage} alt="Ayesha" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-purple-400 shadow-lg glow" />
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Ayesha</h4>
                     <p className="text-indigo-600 font-semibold mb-3 text-lg">Strategy & Growth</p>
                     <p className="text-gray-700 text-base leading-relaxed">

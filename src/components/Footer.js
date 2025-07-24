@@ -39,16 +39,41 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter Section */}
+          {/* Connect With Us Section (Replaced Newsletter) */}
           <div className="text-center md:text-left animate__animated animate__fadeInUp animate__delay-0-7s"> {/* Added animation */}
-            <h3 className="text-xl font-bold mb-5 text-green-200">Newsletter</h3> {/* Stronger heading, new color */}
-            <p className="text-gray-300 leading-relaxed mb-6">Subscribe to our newsletter for the latest updates and insights.</p> {/* Lighter text, better line height, adjusted margin */}
-            <form className="flex w-full max-w-sm mx-auto md:mx-0"> {/* Added width constraints and centering for mobile */}
-              <input type="email" placeholder="Your email" className="px-4 py-3 rounded-l-lg focus:outline-none text-gray-900 w-full border border-indigo-400 focus:border-purple-500" /> {/* Increased padding, added border styles */}
-              <button type="submit" className="bg-gradient-to-br from-indigo-500 to-purple-600 px-5 py-3 rounded-r-lg text-white font-semibold shadow-md hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"> {/* Applied gradient, increased padding, added shadow, hover effects */}
-                <i className="fas fa-paper-plane"></i>
-              </button>
-            </form>
+            <h3 className="text-xl font-bold mb-5 text-green-200">Connect With Us</h3> {/* Stronger heading, new color */}
+            <ul className="space-y-3 mb-6"> {/* Increased space between list items, added margin-bottom */}
+              <li>
+                <a href="tel:7338816479" className="text-gray-300 hover:text-green-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white">
+                  <i className="fas fa-phone-alt mr-2 text-green-400"></i>+91 7338816479
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@siteora.com" className="text-gray-300 hover:text-green-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white">
+                  <i className="fas fa-envelope mr-2 text-green-400"></i>Siteora@gmail.com
+                </a>
+              </li>
+              <li>
+                <a href="https://maps.app.goo.gl/nfJnVNFjRRyaQRFMA?g_st=aw" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-green-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white">
+                  <i className="fas fa-map-marker-alt mr-2 text-green-400"></i>Chennai, Tamil Nadu, India
+                </a>
+              </li>
+            </ul>
+            {/* Social Media Icons */}
+            <div className="flex justify-center md:justify-start space-x-6 mt-4"> {/* Centered for mobile, left-aligned for desktop */}
+              <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-500 transition-colors duration-300 transform hover:scale-125">
+                <i className="fab fa-facebook-f text-2xl"></i>
+              </a>
+              <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors duration-300 transform hover:scale-125">
+                <i className="fab fa-twitter text-2xl"></i>
+              </a>
+              <a href="https://linkedin.com/company/yourcompany" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-700 transition-colors duration-300 transform hover:scale-125">
+                <i className="fab fa-linkedin-in text-2xl"></i>
+              </a>
+              <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-pink-500 transition-colors duration-300 transform hover:scale-125">
+                <i className="fab fa-instagram text-2xl"></i>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -56,9 +81,6 @@ function Footer() {
         <div className="border-t border-gray-700 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 animate__animated animate__fadeInUp animate__delay-0-9s"> {/* Lighter border, increased top margin, added animation */}
           <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All rights reserved.</p> {/* Dynamic year, smaller text */}
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
-            <a href="#" className="hover:text-white transition-colors duration-300 transform hover:scale-105">Privacy Policy</a> {/* Added hover transformation */}
-            <a href="#" className="hover:text-white transition-colors duration-300 transform hover:scale-105">Terms of Service</a> {/* Added hover transformation */}
-            <a href="#" className="hover:text-white transition-colors duration-300 transform hover:scale-105">Sitemap</a> {/* Added hover transformation */}
           </div>
         </div>
       </div>

@@ -134,7 +134,7 @@ Looking forward to hearing back!
                   </div>
                   <div className="ml-5">
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">Our Office</h3>
-                    <p className="text-gray-700">No. 1A 1st Avenue Park Street<br/>Arul Nagar, CH-600059</p>
+                    <p className="text-gray-700">No. 1A 1st Avenue Park Street<br/>Arul Nagar, Chennai-600059</p>
                   </div>
                 </div>
 
@@ -164,16 +164,16 @@ Looking forward to hearing back!
               <div className="mt-12">
                 <h3 className="text-xl font-semibold text-gray-900 mb-5">Follow Us</h3>
                 <div className="flex space-x-4">
-                  <a href="#" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
+                  <a href="https://facebook.com/yourprofile" target="_blank" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
                     <i className="fab fa-facebook-f text-xl"></i>
                   </a>
-                  <a href="#" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
+                  <a href="https://twitter.com/yourprofile" target="_blank" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
                     <i className="fab fa-twitter text-xl"></i>
                   </a>
-                  <a href="#" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
+                  <a href="https://instagram.com/yourprofile" target="_blank" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
                     <i className="fab fa-instagram text-xl"></i>
                   </a>
-                  <a href="#" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
+                  <a href="https://linkedin.com/company/yourcompany" target="_blank" className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-200 hover-scale-105 transition-all shadow-sm">
                     <i className="fab fa-linkedin-in text-xl"></i>
                   </a>
                 </div>
