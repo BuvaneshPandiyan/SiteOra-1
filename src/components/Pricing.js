@@ -1,11 +1,13 @@
 import React from 'react';
 
 function Pricing() {
+  const whatsappNumber = "YOUR_WHATSAPP_NUMBER"; // <--- REPLACE THIS WITH YOUR WHATSAPP NUMBER (e.g., 919876543210)
+
   const pricingPlans = [
     {
       name: "Starter",
       tagline: "Perfect for small businesses and personal brands",
-      price: "₹1,499", // Changed from $499
+      price: "₹1,499",
       period: "/project",
       buttonText: "Get Started",
       features: [
@@ -21,7 +23,7 @@ function Pricing() {
     {
       name: "Business",
       tagline: "Ideal for growing businesses with more complex needs",
-      price: "₹2,499", // Changed from $1,299
+      price: "₹2,499",
       period: "/project",
       buttonText: "Get Started",
       features: [
@@ -37,7 +39,7 @@ function Pricing() {
     {
       name: "Enterprise",
       tagline: "Custom solutions for large businesses and organizations",
-      price: "Custom", // Remains Custom
+      price: "Custom",
       period: "/quote",
       buttonText: "Get Started",
       features: [
@@ -52,6 +54,16 @@ function Pricing() {
     },
   ];
 
+  // Function to generate the WhatsApp message
+  const generateWhatsAppMessage = (plan) => {
+    let message = `Hello! I'm interested in the ${plan.name} plan. Here's what I understand is included:\n\n`;
+    plan.features.forEach(feature => {
+      message += `- ${feature.text}: ${feature.included ? 'Included' : 'Not Included'}\n`;
+    });
+    message += `\nCould you please provide more details or discuss how this plan can meet my needs?`;
+    return encodeURIComponent(message); // Encodes the message for URL
+  };
+
   return (
     <section id="pricing" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,7 +75,7 @@ function Pricing() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pricingPlans.map((plan, index) => (
-            <div key={index} className={bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:border-indigo-300 transition-all duration-300 ${plan.popular ? 'shadow-2xl border-2 border-indigo-300 transform scale-105 z-10' : ''}}>
+            <div key={index} className={`bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:border-indigo-300 transition-all duration-300 ${plan.popular ? 'shadow-2xl border-2 border-indigo-300 transform scale-105 z-10' : ''}`}>
               {plan.popular && (
                 <div className="gradient-bg py-2 text-center">
                   <span className="text-white text-sm font-medium">MOST POPULAR</span>
@@ -74,15 +86,20 @@ function Pricing() {
                 <p className="text-gray-600 mb-6">{plan.tagline}</p>
                 {/* Price display updated with Rupee symbol */}
                 <div className="text-4xl font-bold text-indigo-600 mb-6">{plan.price}<span className="text-lg font-normal">{plan.period}</span></div>
-                <a href="#contact" className={block px-6 py-3 font-medium rounded-lg hover:shadow-lg transition-all mb-8 ${plan.popular ? 'gradient-bg text-white' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'}}>
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=${generateWhatsAppMessage(plan)}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className={`block px-6 py-3 font-medium rounded-lg hover:shadow-lg transition-all mb-8 ${plan.popular ? 'gradient-bg text-white' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'}`}
+                >
                   {plan.buttonText}
                 </a>
               </div>
               <div className="border-t border-gray-100 px-8 py-6 bg-gray-50">
                 <ul className="space-y-4">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className={flex items-center ${!feature.included ? 'text-gray-400' : ''}}>
-                      <i className={fas ${feature.included ? 'fa-check text-green-500' : 'fa-times text-gray-300'} mr-3}></i>
+                    <li key={idx} className={`flex items-center ${!feature.included ? 'text-gray-400' : ''}`}>
+                      <i className={`fas ${feature.included ? 'fa-check text-green-500' : 'fa-times text-gray-300'} mr-3`}></i>
                       <span>{feature.text}</span>
                     </li>
                   ))}
@@ -95,7 +112,12 @@ function Pricing() {
         <div className="mt-12 bg-indigo-50 rounded-xl p-8 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">Need something different?</h3>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">We offer fully customized solutions tailored to your specific requirements. Get in touch to discuss your project.</p>
-          <a href="#contact" className="inline-block px-8 py-3 gradient-bg text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+          <a 
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello! I'm interested in a custom solution. Could you please provide more details?")}`} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="inline-block px-8 py-3 gradient-bg text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
             Request Custom Quote
           </a>
         </div>
