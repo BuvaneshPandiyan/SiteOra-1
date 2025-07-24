@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Pricing() {
-  const whatsappNumber = "YOUR_WHATSAPP_NUMBER"; // <--- REPLACE THIS WITH YOUR WHATSAPP NUMBER (e.g., 919876543210)
+  const whatsappNumber = "917338816479"; // <--- REPLACE THIS WITH YOUR WHATSAPP NUMBER (e.g., 919876543210)
 
   const pricingPlans = [
     {
