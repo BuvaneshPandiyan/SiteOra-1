@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
-function Navbar() {
+// Navbar component now accepts 'onNavigate' prop from App.js
+function Navbar({ onNavigate }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleScroll = (e, id) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(id);
-    if (targetElement) {
-      window.scrollTo({
-        top: targetElement.offsetTop - 80, // Adjust for fixed navbar height
-        behavior: 'smooth',
-      });
-      setIsMobileMenuOpen(false); // Close mobile menu on click
-    }
+  // Helper function to navigate to the home page and then scroll to a specific section.
+  // This is crucial when navigating from the Privacy Policy page back to the home page sections.
+  const navigateAndScroll = (sectionId) => {
+    // First, navigate to the 'home' page state in App.js
+    onNavigate('home');
+    // Use a small timeout to allow React to render the 'home' page components
+    // before attempting to scroll to an element that might not be in the DOM yet.
+    setTimeout(() => {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        // Adjust for fixed navbar height if necessary, otherwise remove '- 80'
+        window.scrollTo({
+          top: targetElement.offsetTop - 80,
+          behavior: 'smooth',
+        });
+      }
+    }, 100); // 100ms timeout should be sufficient, adjust if needed
+    setIsMobileMenuOpen(false); // Close mobile menu after navigation
   };
 
   return (
@@ -20,19 +29,22 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center">
-            <div className="flex items-center">
+            {/* Logo/Brand - Clicking this should always go to the home page */}
+            <button onClick={() => onNavigate('home')} className="flex items-center focus:outline-none">
               <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-xl">SO</div>
               <span className="ml-3 text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">SiteOra</span>
-            </div>
+            </button>
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
-              <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-              <a href="#services" onClick={(e) => handleScroll(e, '#services-section')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Services</a>
-              <a href="#portfolio" onClick={(e) => handleScroll(e, '#portfolio')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Portfolio</a>
-              <a href="#pricing" onClick={(e) => handleScroll(e, '#pricing')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
-              <a href="#contact" onClick={(e) => handleScroll(e, '#contact')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
-              <a href="#about" onClick={(e) => handleScroll(e, '#about')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a> {/* Changed #aboutus to #about */}
+              {/* Home link - directly navigates to home page */}
+              <button onClick={() => onNavigate('home')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">Home</button>
+              {/* Other links use navigateAndScroll to go to home and then scroll */}
+              <button onClick={() => navigateAndScroll('services-section')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">Services</button>
+              <button onClick={() => navigateAndScroll('portfolio')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">Portfolio</button>
+              <button onClick={() => navigateAndScroll('pricing')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">Pricing</button>
+              <button onClick={() => navigateAndScroll('contact')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">Contact</button>
+              <button onClick={() => navigateAndScroll('about')} className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none">About</button>
             </div>
           </div>
           <div className="md:hidden">
@@ -47,12 +59,14 @@ function Navbar() {
 
       {/* Mobile menu */}
       <div id="mobile-menu" className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:hidden bg-white shadow-lg rounded-lg mx-4 mt-2 py-2`}>
-        <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Home</a>
-        <a href="#services" onClick={(e) => handleScroll(e, '#services')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Services</a>
-        <a href="#portfolio" onClick={(e) => handleScroll(e, '#portfolio')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Portfolio</a>
-        <a href="#pricing" onClick={(e) => handleScroll(e, '#pricing')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Pricing</a>
-        <a href="#contact" onClick={(e) => handleScroll(e, '#contact')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Contact</a>
-        <a href="#about" onClick={(e) => handleScroll(e, '#about')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">About Us</a> {/* Changed #aboutus to #about */}
+        {/* Mobile Home link - directly navigates to home page */}
+        <button onClick={() => onNavigate('home')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">Home</button>
+        {/* Other mobile links use navigateAndScroll */}
+        <button onClick={() => navigateAndScroll('services-section')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">Services</button>
+        <button onClick={() => navigateAndScroll('portfolio')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">Portfolio</button>
+        <button onClick={() => navigateAndScroll('pricing')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">Pricing</button>
+        <button onClick={() => navigateAndScroll('contact')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">Contact</button>
+        <button onClick={() => navigateAndScroll('about')} className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 w-full text-left">About Us</button>
       </div>
     </nav>
   );
