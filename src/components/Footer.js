@@ -39,7 +39,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Connect With Us Section (Replaced Newsletter) */}
+          {/* Connect With Us Section */}
           <div className="text-center md:text-left animate__animated animate__fadeInUp animate__delay-0-7s"> {/* Added animation */}
             <h3 className="text-xl font-bold mb-5 text-green-200">Connect With Us</h3> {/* Stronger heading, new color */}
             <ul className="space-y-3 mb-6"> {/* Increased space between list items, added margin-bottom */}
@@ -81,6 +81,10 @@ function Footer() {
         <div className="border-t border-gray-700 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 animate__animated animate__fadeInUp animate__delay-0-9s"> {/* Lighter border, increased top margin, added animation */}
           <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All rights reserved.</p> {/* Dynamic year, smaller text */}
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
+            {/* Privacy Policy Button/Link - NEW */}
+            <a href="#privacy-policy" className="text-gray-300 hover:text-white transition-colors duration-300">Privacy Policy</a>
+            {/* You can add other legal links here, e.g., Terms of Service */}
+            <a href="#terms-of-service" className="text-gray-300 hover:text-white transition-colors duration-300">Terms of Service</a>
           </div>
         </div>
       </div>
