@@ -31,11 +31,12 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
           <div className="text-center md:text-left animate__animated animate__fadeInUp animate__delay-0-4s"> {/* Added animation */}
             <h3 className="text-xl font-bold mb-5 text-indigo-200">Services</h3> {/* Stronger heading, lighter color */}
             <ul className="space-y-3"> {/* Increased space between list items */}
-              <li>Web Development</li> {/* Changed to button with onClick */}
-              <li>E-Commerce</li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('services')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-paint-brush mr-2 text-indigo-400"></i>UI/UX Design</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('services')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-chart-line mr-2 text-indigo-400"></i>SEO & Marketing</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('services')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-mobile-alt mr-2 text-indigo-400"></i>Mobile Apps</button></li> {/* Changed to button with onClick */}
+              {/* Changed back to <a> tags without onClick, making them display-only content */}
+              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-code mr-2 text-indigo-400"></i>Web Development</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-shopping-cart mr-2 text-indigo-400"></i>E-Commerce</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-paint-brush mr-2 text-indigo-400"></i>UI/UX Design</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-chart-line mr-2 text-indigo-400"></i>SEO & Marketing</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-mobile-alt mr-2 text-indigo-400"></i>Mobile Apps</a></li>
             </ul>
           </div>
 
@@ -46,6 +47,8 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
               <li><button onClick={() => navigateAndScroll('about')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-info-circle mr-2 text-purple-400"></i>About Us</button></li> {/* Changed to button with onClick */}
               <li><button onClick={() => navigateAndScroll('portfolio')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Portfolio</button></li> {/* Changed to button with onClick */}
               <li><button onClick={() => navigateAndScroll('testimonials')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-quote-right mr-2 text-purple-400"></i>Testimonials</button></li> {/* Changed to button with onClick */}
+              <li><button onClick={() => navigateAndScroll('careers')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Careers</button></li> {/* Changed to button with onClick */}
+              <li><button onClick={() => navigateAndScroll('blog')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-blog mr-2 text-purple-400"></i>Blog</button></li> {/* Changed to button with onClick */}
             </ul>
           </div>
 
