@@ -1,7 +1,7 @@
 import React from 'react';
 import 'animate.css'; // Ensure animate.css is imported
 
-function Footer() {
+function Footer({ onNavigate }) { // Accept onNavigate prop
   return (
     <footer className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16 rounded-t-3xl shadow-2xl overflow-hidden"> {/* Added gradient, increased padding, rounded top, shadow, and overflow-hidden for animation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,7 +82,8 @@ function Footer() {
           <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All rights reserved.</p> {/* Dynamic year, smaller text */}
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
             {/* Privacy Policy Button/Link - NEW */}
-            <a href="#privacypolicy" className="text-gray-300 hover:text-white transition-colors duration-300">Privacy Policy</a>
+            {/* Changed href to onClick and removed id as it's not needed for programmatic navigation */}
+            <button onClick={() => onNavigate('privacy-policy')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
             {/* You can add other legal links here, e.g., Terms of Service */}
             <a href="#terms-of-service" className="text-gray-300 hover:text-white transition-colors duration-300">Terms of Service</a>
           </div>
