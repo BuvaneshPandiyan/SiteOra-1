@@ -82,7 +82,7 @@ function Footer() {
           <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All rights reserved.</p> {/* Dynamic year, smaller text */}
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
             {/* Privacy Policy Button/Link - NEW */}
-            <a href="#privacy-policy" className="text-gray-300 hover:text-white transition-colors duration-300">Privacy Policy</a>
+            <a href="#privacypolicy" className="text-gray-300 hover:text-white transition-colors duration-300">Privacy Policy</a>
             {/* You can add other legal links here, e.g., Terms of Service */}
             <a href="#terms-of-service" className="text-gray-300 hover:text-white transition-colors duration-300">Terms of Service</a>
           </div>
