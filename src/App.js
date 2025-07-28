@@ -14,7 +14,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppChatButton from './components/WhatsAppChatButton';
 import About from './components/AboutUs';
-import PrivacyPolicy from './PrivacyPolicy'; // Import the PrivacyPolicy component
+import PrivacyPolicy from './components/PrivacyPolicy'; // <--- CORRECTED IMPORT PATH
 
 function App() {
   // State to manage the current page view
