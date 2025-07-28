@@ -107,7 +107,7 @@ const PrivacyPolicy = () => { // Changed component name from App to PrivacyPolic
                 </p>
 
                 {/* Information We Collect Section */}
-                <section ref={setRef} className="mb-10 fade-section">
+                <section id="privacypolicy" ref={setRef} className="mb-10 fade-section">
                     <h2 className="text-2xl font-bold text-indigo-600 mb-4">1. Information We Collect</h2>
                     <p className="mb-3">
                         We collect various types of information to provide and improve our services to you.
