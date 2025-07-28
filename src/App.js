@@ -14,7 +14,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppChatButton from './components/WhatsAppChatButton';
 import About from './components/AboutUs';
-import PrivacyPolicy from './components/PrivacyPolicy'; // <--- CORRECTED IMPORT PATH
+import PrivacyPolicy from './components/PrivacyPolicy'; // Corrected import path
 
 function App() {
   // State to manage the current page view
@@ -65,7 +65,7 @@ function App() {
         </main>
       ) : (
         // Render PrivacyPolicy component when currentPage is 'privacy-policy'
-        <PrivacyPolicy onNavigate={handleNavigation} /> {/* Pass navigation handler to PrivacyPolicy if it needs a "back" button */}
+        <PrivacyPolicy onNavigate={handleNavigation} /> // Removed trailing comment
       )}
 
       {/* Footer and WhatsAppChatButton are always rendered */}
