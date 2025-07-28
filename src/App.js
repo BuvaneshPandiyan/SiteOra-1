@@ -44,31 +44,33 @@ function App() {
         </div>
       )}
 
-      {/* Conditionally render content based on currentPage state */}
+      {/* Navbar is always rendered */}
+      <Navbar onNavigate={handleNavigation} /> {/* Pass navigation handler to Navbar */}
+
+      {/* Conditionally render main content or PrivacyPolicy component */}
       {currentPage === 'home' ? (
-        <>
-          <Navbar onNavigate={handleNavigation} /> {/* Pass navigation handler to Navbar */}
-          <main>
-            <Hero />
-            <Clients />
-            <Services />
-            <Stats />
-            <Portfolio />
-            <Testimonials />
-            <Pricing />
-            <Process />
-            <FAQ />
-            <CTA />
-            <Contact />
-          </main>
-          <About />
-          <Footer onNavigate={handleNavigation} /> {/* Pass navigation handler to Footer */}
-          <WhatsAppChatButton />
-        </>
+        <main>
+          <Hero />
+          <Clients />
+          <Services />
+          <Stats />
+          <Portfolio />
+          <Testimonials />
+          <Pricing />
+          <Process />
+          <FAQ />
+          <CTA />
+          <Contact />
+          <About /> {/* About component moved here to be part of home content */}
+        </main>
       ) : (
         // Render PrivacyPolicy component when currentPage is 'privacy-policy'
-        <PrivacyPolicy onNavigate={handleNavigation} /> // Pass navigation handler to PrivacyPolicy if it needs a "back" button
+        <PrivacyPolicy onNavigate={handleNavigation} /> {/* Pass navigation handler to PrivacyPolicy if it needs a "back" button */}
       )}
+
+      {/* Footer and WhatsAppChatButton are always rendered */}
+      <Footer onNavigate={handleNavigation} /> {/* Pass navigation handler to Footer */}
+      <WhatsAppChatButton />
     </div>
   );
 }
