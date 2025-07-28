@@ -83,7 +83,7 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
             {/* Privacy Policy Button/Link - NEW */}
             {/* Changed href to onClick and removed id as it's not needed for programmatic navigation */}
-            <button onClick={() => onNavigate('privacypolicy')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
+            <button onClick={() => onNavigate('privacy-policy')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
             {/* You can add other legal links here, e.g., Terms of Service */}
             <a href="#terms-of-service" className="text-gray-300 hover:text-white transition-colors duration-300">Terms of Service</a>
           </div>
