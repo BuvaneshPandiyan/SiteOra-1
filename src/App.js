@@ -14,19 +14,33 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppChatButton from './components/WhatsAppChatButton';
 import About from './components/AboutUs';
-import PrivacyPolicy from './components/PrivacyPolicy'; // Corrected import path
+import PrivacyPolicy from './components/PrivacyPolicy';
+// Re-adding the import for NotHiringModal
+import NotHiringModal from './components/NotHiringModal';
 
 function App() {
   // State to manage the current page view
-  // 'home' will display the main website content
-  // 'privacy-policy' will display the PrivacyPolicy component
   const [currentPage, setCurrentPage] = useState('home');
+  // Re-adding state for the hiring modal visibility
+  const [isHiringModalOpen, setIsHiringModalOpen] = useState(false);
 
   // Function to handle navigation
   const handleNavigation = (pageName) => {
     setCurrentPage(pageName);
-    // Scroll to top when navigating to a new page
-    window.scrollTo(0, 0);
+    // Only scroll to top if navigating to a *new* full page.
+    // For internal home page section scrolls, Navbar/Footer's navigateAndScroll handles it.
+    if (pageName !== 'home') {
+      window.scrollTo(0, 0);
+    }
+  };
+
+  // Re-adding functions to open and close the hiring modal
+  const handleOpenHiringModal = () => {
+    setIsHiringModalOpen(true);
+  };
+
+  const handleCloseHiringModal = () => {
+    setIsHiringModalOpen(false);
   };
 
   return (
@@ -44,12 +58,12 @@ function App() {
         </div>
       )}
 
-      {/* Navbar is always rendered */}
-      <Navbar onNavigate={handleNavigation} /> {/* Pass navigation handler to Navbar */}
+      {/* Navbar is always rendered and now receives currentPage */}
+      <Navbar onNavigate={handleNavigation} currentPage={currentPage} />
 
-      {/* Conditionally render main content or PrivacyPolicy component */}
+      {/* Conditionally render main content or specific pages */}
       {currentPage === 'home' ? (
-        <main>
+        <main className="pt-12"> {/* Adjusted padding-top to pt-12 for smaller navbar */}
           <Hero />
           <Clients />
           <Services />
@@ -61,16 +75,20 @@ function App() {
           <FAQ />
           <CTA />
           <Contact />
-          <About /> {/* About component moved here to be part of home content */}
+          <About />
         </main>
-      ) : (
-        // Render PrivacyPolicy component when currentPage is 'privacy-policy'
-        <PrivacyPolicy onNavigate={handleNavigation} /> // Removed trailing comment
-      )}
+      ) : currentPage === 'privacy-policy' ? (
+        <PrivacyPolicy onNavigate={handleNavigation} />
+      ) : null
+      }
 
       {/* Footer and WhatsAppChatButton are always rendered */}
-      <Footer onNavigate={handleNavigation} /> {/* Pass navigation handler to Footer */}
+      {/* Re-adding onOpenHiringModal prop */}
+      <Footer onNavigate={handleNavigation} currentPage={currentPage} onOpenHiringModal={handleOpenHiringModal} />
       <WhatsAppChatButton />
+
+      {/* Re-rendering the NotHiringModal */}
+      <NotHiringModal isOpen={isHiringModalOpen} onClose={handleCloseHiringModal} />
     </div>
   );
 }
