@@ -7,7 +7,7 @@ function Pricing() {
     {
       name: "Starter",
       tagline: "Perfect for small businesses and personal brands",
-      price: "₹1,499",
+      price: "₹3,999",
       period: "/project",
       buttonText: "Get Started",
       features: [
@@ -23,7 +23,7 @@ function Pricing() {
     {
       name: "Business",
       tagline: "Ideal for growing businesses with more complex needs",
-      price: "₹2,499",
+      price: "₹6,999",
       period: "/project",
       buttonText: "Get Started",
       features: [
@@ -39,7 +39,7 @@ function Pricing() {
     {
       name: "Enterprise",
       tagline: "Custom solutions for large businesses and organizations",
-      price: "Custom",
+      price: "1,4999",
       period: "/quote",
       buttonText: "Get Started",
       features: [
