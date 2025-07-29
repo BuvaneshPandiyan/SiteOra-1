@@ -109,7 +109,6 @@ function Footer({ onNavigate, currentPage, onOpenHiringModal }) { // Accept onOp
             {/* Privacy Policy Button/Link */}
             <button onClick={() => onNavigate('privacy-policy')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
             {/* Terms of Service Button/Link */}
-            <button onClick={() => onNavigate('terms-of-service')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Terms of Service</button>
           </div>
         </div>
       </div>
