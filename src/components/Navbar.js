@@ -20,9 +20,9 @@ function Navbar({ onNavigate, currentPage }) {
     setTimeout(() => {
       const targetElement = document.getElementById(sectionId);
       if (targetElement) {
-        // Adjust for fixed navbar height. h-10 is 40px.
+        // Adjust for fixed navbar height. h-8 is 32px.
         window.scrollTo({
-          top: targetElement.offsetTop - 40, // Adjusted from 48 to 40
+          top: targetElement.offsetTop - 32, // Adjusted from 40 to 32 (for h-8)
           behavior: 'smooth',
         });
       }
@@ -73,18 +73,21 @@ function Navbar({ onNavigate, currentPage }) {
   return (
     <nav className={`fixed w-full z-50 bg-white/80 backdrop-blur-md transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-10 items-center"> {/* Changed h-12 to h-10 */}
+        {/* Adjusted height for mobile (h-8) and desktop (md:h-10) */}
+        <div className="flex justify-between h-8 md:h-10 items-center">
           <div className="flex-shrink-0 flex items-center">
             {/* Logo/Brand - Clicking this should always go to the home page */}
             <button onClick={() => onNavigate('home')} className="flex items-center focus:outline-none">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base shadow-md transform hover:scale-105 transition-transform duration-300">SO</div> {/* Changed w-8 h-8 to w-7 h-7 and text-lg to text-base */}
-              <span className="ml-2 text-base font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">SiteOra</span> {/* Changed text-lg to text-base and ml-3 to ml-2 */}
+              {/* Adjusted logo size for mobile (w-6 h-6, text-sm) and desktop (md:w-7 md:h-7, md:text-base) */}
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm shadow-md transform hover:scale-105 transition-transform duration-300 md:w-7 md:h-7 md:text-base">SO</div>
+              {/* Adjusted SiteOra text size for mobile (text-base) and desktop (md:text-base) */}
+              <span className="ml-2 text-base font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">SiteOra</span>
             </button>
           </div>
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-6"> {/* Adjusted space-x-8 to space-x-6 */}
+            <div className="ml-10 flex items-center space-x-6">
               {/* Home link - directly navigates to home page */}
-              <button onClick={() => onNavigate('home')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none"> {/* Adjusted px-3 to px-2.5 and py-1.5 to py-1 */}
+              <button onClick={() => onNavigate('home')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 Home
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
