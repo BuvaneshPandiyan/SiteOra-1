@@ -1,17 +1,28 @@
 import React from 'react';
 import 'animate.css'; // Ensure animate.css is imported
 
-function Footer({ onNavigate }) { // Accept onNavigate prop
-  // Helper function to navigate to home and then scroll to a section
+function Footer({ onNavigate, currentPage, onOpenHiringModal }) { // Accept onOpenHiringModal prop
+  // Helper function to navigate to home (if not already there) and then scroll to a section
   const navigateAndScroll = (sectionId) => {
-    onNavigate('home');
-    // Use a small timeout to allow the 'home' page to render before scrolling
+    // Only navigate to 'home' if we are currently on a different page.
+    // This prevents unnecessary re-renders when already on the home page.
+    if (currentPage !== 'home') {
+      onNavigate('home');
+    }
+
+    // Use a small timeout to allow React to render the 'home' page components
+    // before attempting to scroll to an element that might not be in the DOM yet.
+    // The timeout is applied if we just navigated to 'home', otherwise it's immediate.
     setTimeout(() => {
       const section = document.getElementById(sectionId);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        // Adjust for fixed navbar height (h-12 is 48px).
+        window.scrollTo({
+          top: section.offsetTop - 48, // Adjusted to 48px for smaller navbar
+          behavior: 'smooth',
+        });
       }
-    }, 100); // Adjust timeout if needed
+    }, currentPage !== 'home' ? 100 : 0); // 100ms timeout if changing page, 0ms if already on home
   };
 
   return (
@@ -31,12 +42,11 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
           <div className="text-center md:text-left animate__animated animate__fadeInUp animate__delay-0-4s"> {/* Added animation */}
             <h3 className="text-xl font-bold mb-5 text-indigo-200">Services</h3> {/* Stronger heading, lighter color */}
             <ul className="space-y-3"> {/* Increased space between list items */}
-              {/* Changed back to <a> tags without onClick, making them display-only content */}
-              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-code mr-2 text-indigo-400"></i>Web Development</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-shopping-cart mr-2 text-indigo-400"></i>E-Commerce</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-paint-brush mr-2 text-indigo-400"></i>UI/UX Design</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-chart-line mr-2 text-indigo-400"></i>SEO & Marketing</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white"><i className="fas fa-mobile-alt mr-2 text-indigo-400"></i>Mobile Apps</a></li>
+              <li><button onClick={() => navigateAndScroll('services-section')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-code mr-2 text-indigo-400"></i>Web Development</button></li>
+              <li><button onClick={() => navigateAndScroll('services-section')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-shopping-cart mr-2 text-indigo-400"></i>E-Commerce</button></li>
+              <li><button onClick={() => navigateAndScroll('services-section')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-paint-brush mr-2 text-indigo-400"></i>UI/UX Design</button></li>
+              <li><button onClick={() => navigateAndScroll('services-section')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-chart-line mr-2 text-indigo-400"></i>SEO & Marketing</button></li>
+              <li><button onClick={() => navigateAndScroll('services-section')} className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-mobile-alt mr-2 text-indigo-400"></i>Mobile Apps</button></li>
             </ul>
           </div>
 
@@ -44,11 +54,13 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
           <div className="text-center md:text-left animate__animated animate__fadeInUp animate__delay-0-6s"> {/* Added animation */}
             <h3 className="text-xl font-bold mb-5 text-purple-200">Company</h3> {/* Stronger heading, lighter color */}
             <ul className="space-y-3"> {/* Increased space between list items */}
-              <li><button onClick={() => navigateAndScroll('about')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-info-circle mr-2 text-purple-400"></i>About Us</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('portfolio')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Portfolio</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('testimonials')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-quote-right mr-2 text-purple-400"></i>Testimonials</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('careers')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Careers</button></li> {/* Changed to button with onClick */}
-              <li><button onClick={() => navigateAndScroll('blog')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-blog mr-2 text-purple-400"></i>Blog</button></li> {/* Changed to button with onClick */}
+              <li><button onClick={() => navigateAndScroll('about')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-info-circle mr-2 text-purple-400"></i>About Us</button></li>
+              <li><button onClick={() => navigateAndScroll('portfolio')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Portfolio</button></li>
+              <li><button onClick={() => navigateAndScroll('testimonials')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-quote-right mr-2 text-purple-400"></i>Testimonials</button></li>
+              {/* Careers button now opens the modal */}
+              <li><button onClick={onOpenHiringModal} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-briefcase mr-2 text-purple-400"></i>Careers</button></li>
+              {/* Removed the Blog button */}
+              {/* <li><button onClick={() => navigateAndScroll('blog')} className="text-gray-300 hover:text-purple-400 transition-colors duration-300 flex items-center justify-center md:justify-start transform hover:translate-x-1 hover:text-white focus:outline-none"><i className="fas fa-blog mr-2 text-purple-400"></i>Blog</button></li> */}
             </ul>
           </div>
 
@@ -96,7 +108,7 @@ function Footer({ onNavigate }) { // Accept onNavigate prop
           <div className="flex space-x-6 text-sm"> {/* Smaller text for legal links */}
             {/* Privacy Policy Button/Link */}
             <button onClick={() => onNavigate('privacy-policy')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
-            {/* Terms of Service Button/Link - assuming it's also a separate page, or you can adjust */}
+            {/* Terms of Service Button/Link */}
             <button onClick={() => onNavigate('terms-of-service')} className="text-gray-300 hover:text-white transition-colors duration-300 focus:outline-none">Terms of Service</button>
           </div>
         </div>
