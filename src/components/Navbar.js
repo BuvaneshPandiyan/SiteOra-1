@@ -20,9 +20,9 @@ function Navbar({ onNavigate, currentPage }) {
     setTimeout(() => {
       const targetElement = document.getElementById(sectionId);
       if (targetElement) {
-        // Adjust for fixed navbar height. h-12 is 48px.
+        // Adjust for fixed navbar height. h-10 is 40px.
         window.scrollTo({
-          top: targetElement.offsetTop - 48, // Changed from 80 to 48
+          top: targetElement.offsetTop - 40, // Adjusted from 48 to 40
           behavior: 'smooth',
         });
       }
@@ -73,39 +73,39 @@ function Navbar({ onNavigate, currentPage }) {
   return (
     <nav className={`fixed w-full z-50 bg-white/80 backdrop-blur-md transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-12 items-center">
+        <div className="flex justify-between h-10 items-center"> {/* Changed h-12 to h-10 */}
           <div className="flex-shrink-0 flex items-center">
             {/* Logo/Brand - Clicking this should always go to the home page */}
             <button onClick={() => onNavigate('home')} className="flex items-center focus:outline-none">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-md transform hover:scale-105 transition-transform duration-300">SO</div>
-              <span className="ml-3 text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">SiteOra</span>
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base shadow-md transform hover:scale-105 transition-transform duration-300">SO</div> {/* Changed w-8 h-8 to w-7 h-7 and text-lg to text-base */}
+              <span className="ml-2 text-base font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">SiteOra</span> {/* Changed text-lg to text-base and ml-3 to ml-2 */}
             </button>
           </div>
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-8">
+            <div className="ml-10 flex items-center space-x-6"> {/* Adjusted space-x-8 to space-x-6 */}
               {/* Home link - directly navigates to home page */}
-              <button onClick={() => onNavigate('home')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => onNavigate('home')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none"> {/* Adjusted px-3 to px-2.5 and py-1.5 to py-1 */}
                 Home
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
               {/* Other links use navigateAndScroll to go to home and then scroll */}
-              <button onClick={() => navigateAndScroll('services-section')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => navigateAndScroll('services-section')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 Services
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
-              <button onClick={() => navigateAndScroll('portfolio')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => navigateAndScroll('portfolio')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 Portfolio
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
-              <button onClick={() => navigateAndScroll('pricing')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => navigateAndScroll('pricing')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 Pricing
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
-              <button onClick={() => navigateAndScroll('contact')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => navigateAndScroll('contact')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 Contact
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
-              <button onClick={() => navigateAndScroll('about')} className="text-gray-700 hover:text-indigo-600 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
+              <button onClick={() => navigateAndScroll('about')} className="text-gray-700 hover:text-indigo-600 px-2.5 py-1 rounded-md text-sm font-medium transition-all duration-300 relative group focus:outline-none">
                 About
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
               </button>
