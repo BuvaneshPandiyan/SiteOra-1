@@ -74,9 +74,10 @@ function Services() {
   const [inView, setInView] = useState(false);
   // State for the active card index in the mobile stack
   const [activeIndex, setActiveIndex] = useState(0);
-  // State for swipe gestures
-  const [touchStartX, setTouchStartX] = useState(null);
+  // State for swipe/drag gestures
+  const [startPos, setStartPos] = useState(null);
   const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
 
   useEffect(() => {
@@ -84,7 +85,6 @@ function Services() {
       const section = document.getElementById('services-section');
       if (section) {
         const rect = section.getBoundingClientRect();
-        // Trigger animation when the section is 70% in view
         if (rect.top < window.innerHeight * 0.7 && rect.bottom > 0) {
           setInView(true);
         }
@@ -92,56 +92,61 @@ function Services() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial position on mount
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // --- Swipe Handlers for Mobile ---
-  const handleTouchStart = (e) => {
-    setTouchStartX(e.targetTouches[0].clientX);
+  // --- Combined Swipe/Drag Handlers ---
+  const handleDragStart = (clientX) => {
+    setIsDragging(true);
+    setStartPos(clientX);
   };
 
-  const handleTouchMove = (e) => {
-    if (touchStartX === null) return;
-    const currentX = e.targetTouches[0].clientX;
-    setDragOffset(currentX - touchStartX);
+  const handleDragMove = (clientX) => {
+    if (!isDragging || startPos === null) return;
+    setDragOffset(clientX - startPos);
   };
 
-  const handleTouchEnd = () => {
-    // Reduced swipe distance for a smoother, more sensitive feel
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+
     const minSwipeDistance = 50; 
 
     if (dragOffset > minSwipeDistance) {
-      // Swiped right (previous card), loops to the end
-      setActiveIndex((prevIndex) => (prevIndex - 1 + servicesData.length) % servicesData.length);
+      setActiveIndex((prev) => (prev - 1 + servicesData.length) % servicesData.length);
     } else if (dragOffset < -minSwipeDistance) {
-      // Swiped left (next card), loops to the start
-      setActiveIndex((prevIndex) => (prevIndex + 1) % servicesData.length);
+      setActiveIndex((prev) => (prev + 1) % servicesData.length);
     }
 
     // Reset drag state
-    setTouchStartX(null);
+    setIsDragging(false);
+    setStartPos(null);
     setDragOffset(0);
   };
+
+  // Touch Events
+  const handleTouchStart = (e) => handleDragStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e) => handleDragMove(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => handleDragEnd();
+
+  // Mouse Events
+  const handleMouseDown = (e) => handleDragStart(e.clientX);
+  const handleMouseMove = (e) => handleDragMove(e.clientX);
+  const handleMouseUp = () => handleDragEnd();
+  const handleMouseLeave = () => handleDragEnd(); // End drag if mouse leaves the area
 
 
   return (
     <>
-      {/* Ensure Animate.css and Font Awesome are linked in your public/index.html or equivalent:
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-      */}
       <section
         id="services-section"
         className={`py-20 md:py-32 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden
           animate__animated ${inView ? 'animate__fadeIn' : 'opacity-0'}`}
       >
-        {/* Subtle Background Overlay with animation */}
         <div className="absolute inset-0 animated-bg-gradient -z-10 motion-reduce:animate-none"></div>
-        {/* Animated background blobs */}
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob motion-reduce:animate-none"></div>
         <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
         <div className="absolute top-1/4 left-1/3 w-56 h-56 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
@@ -169,8 +174,8 @@ function Services() {
             </p>
           </div>
 
-          {/* --- Desktop Grid View --- */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {/* --- Desktop & Tablet Grid View --- */}
+          <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {servicesData.map((service, index) => (
               <div
                 key={index}
@@ -178,7 +183,7 @@ function Services() {
                   transition-all duration-500 ease-in-out group
                   hover:shadow-2xl hover:border-blue-400 transform hover:scale-[1.03] hover:rotate-1
                   animate__animated ${inView ? 'animate__fadeInUp' : 'opacity-0'} motion-reduce:animate-none`}
-                style={{ animationDelay: inView ? `${0.15 * index + 0.5}s` : '0s' }} // Staggered animation
+                style={{ animationDelay: inView ? `${0.15 * index + 0.5}s` : '0s' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10"></div>
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-200 rounded-full opacity-0 group-hover:opacity-50 transition-all duration-500 ease-in-out group-hover:scale-150 -z-10"></div>
@@ -224,13 +229,17 @@ function Services() {
             ))}
           </div>
 
-          {/* --- Mobile Stacked Card View with Swipe --- */}
-          <div className="md:hidden">
+          {/* --- Mobile-Only Stacked Card View with Swipe --- */}
+          <div className="sm:hidden">
             <div
-              className="relative h-[550px] mt-8 card-stack-container"
+              className="relative h-[550px] mt-8 card-stack-container cursor-grab active:cursor-grabbing"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
             >
               {servicesData.map((service, index) => {
                 const isTopCard = index === activeIndex;
@@ -242,19 +251,16 @@ function Services() {
                 };
 
                 if (stackPosition < 0) {
-                  // Cards that have been swiped away
                   style.transform = 'translateX(-120%) rotate(-15deg)';
                   style.opacity = 0;
                 } else if (isTopCard) {
-                  // The current card being swiped, with hover-like animations applied
                   style.transform = `translateX(${dragOffset}px) rotate(${dragOffset / 20}deg) scale(1.03)`;
-                  if (touchStartX !== null) {
-                    style.transition = 'none'; // Instant feedback while dragging
+                  if (isDragging) {
+                    style.transition = 'none';
                   }
                 } else {
-                  // Cards in the stack behind, fanned out
                   style.transform = `translateX(${stackPosition * 15}px) translateY(${stackPosition * -15}px) rotate(${stackPosition * 4}deg) scale(${1 - stackPosition * 0.05})`;
-                  style.opacity = stackPosition > 3 ? 0 : 1; // Hide cards more than 3 deep
+                  style.opacity = stackPosition > 3 ? 0 : 1;
                   style.visibility = stackPosition > 3 ? 'hidden' : 'visible';
                 }
                 
@@ -266,10 +272,8 @@ function Services() {
                     `}
                     style={style}
                   >
-                    {/* Animated background elements, visible only on the active card */}
                     <div className={`absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 transition-opacity duration-500 rounded-3xl -z-10 ${isTopCard ? 'opacity-100' : 'opacity-0'}`}></div>
                     <div className={`absolute -bottom-10 -right-10 w-40 h-40 bg-blue-200 rounded-full transition-all duration-500 ease-in-out -z-10 ${isTopCard ? 'opacity-50 scale-150' : 'opacity-0'}`}></div>
-
                     <div
                       className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg bg-gradient-to-br from-blue-500 to-indigo-600 transition-all duration-300 ease-in-out
                         ${isTopCard ? 'rotate-6 scale-110 from-indigo-600 to-blue-600' : ''}
@@ -301,7 +305,6 @@ function Services() {
                 );
               })}
             </div>
-            {/* Dot indicators for mobile stack */}
             <div className="flex justify-center items-center mt-8 space-x-2">
                 {servicesData.map((_, index) => (
                     <div
@@ -316,9 +319,7 @@ function Services() {
         </div>
       </section>
 
-      {/* Integrated CSS Styles for animations */}
       <style jsx>{`
-        /* --- General Animations --- */
         @keyframes pulseBackground {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -328,32 +329,6 @@ function Services() {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-8px) rotate(2deg); }
         }
-        @keyframes text-float-subtle {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-2px); }
-        }
-        @keyframes text-wave {
-          0%, 100% { transform: rotate(0deg); }
-          25% { transform: rotate(0.5deg); }
-          75% { transform: rotate(-0.5deg); }
-        }
-        @keyframes text-pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.005); opacity: 0.95; }
-        }
-        @keyframes text-jiggle {
-          0%, 100% { transform: translateX(0px) rotate(0deg); }
-          25% { transform: translateX(1px) rotate(0.2deg); }
-          75% { transform: translateX(-1px) rotate(-0.2deg); }
-        }
-        @keyframes text-breathe {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.002); }
-        }
-        @keyframes checkmark-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }
@@ -361,25 +336,12 @@ function Services() {
           100% { transform: translate(0px, 0px) scale(1); }
         }
         .animate-blob { animation: blob 7s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        @keyframes text-glow {
-          0%, 100% { text-shadow: 0 0 5px rgba(100, 116, 139, 0.3), 0 0 10px rgba(129, 140, 248, 0.2); }
-          50% { text-shadow: 0 0 15px rgba(100, 116, 139, 0.6), 0 0 25px rgba(129, 140, 248, 0.4); }
-        }
         .animate-float { animation: float 3s infinite ease-in-out; }
-        .animate-text-float-subtle { animation: text-float-subtle 3s infinite ease-in-out; }
-        .animate-text-wave { animation: text-wave 5s infinite ease-in-out; }
-        .animate-text-pulse { animation: text-pulse 4s infinite ease-in-out; }
-        .animate-text-jiggle { animation: text-jiggle 2s infinite ease-in-out; }
-        .animate-text-breathe { animation: text-breathe 3s infinite ease-in-out; }
-        .animate-checkmark-pulse { animation: checkmark-pulse 1.5s infinite ease-in-out; }
         .animated-bg-gradient {
           background: linear-gradient(135deg, #e0f7fa 0%, #d4eaf0 100%);
           background-size: 200% 200%;
           animation: pulseBackground 10s infinite ease-in-out;
         }
-        .motion-reduce .animated-bg-gradient { animation: none; }
       `}</style>
     </>
   );
