@@ -113,7 +113,8 @@ function Services() {
   const handleDragEnd = () => {
     if (!isDragging) return;
 
-    const minSwipeDistance = 50; 
+    // Lowered the swipe distance threshold for a much smoother feel
+    const minSwipeDistance = 40; 
 
     if (dragOffset > minSwipeDistance) {
       setActiveIndex((prev) => (prev - 1 + servicesData.length) % servicesData.length);
