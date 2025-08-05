@@ -111,7 +111,8 @@ function Services() {
   };
 
   const handleTouchEnd = () => {
-    const minSwipeDistance = 75; // Minimum pixels for a swipe
+    // Reduced swipe distance for a smoother, more sensitive feel
+    const minSwipeDistance = 50; 
 
     if (dragOffset > minSwipeDistance) {
       // Swiped right (previous card), loops to the end
