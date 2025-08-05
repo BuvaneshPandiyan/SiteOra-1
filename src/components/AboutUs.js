@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+import React, { useState, useEffect } from 'react';
 import 'animate.css'; // Ensure animate.css is imported
 import { useInView } from 'react-intersection-observer'; // Import useInView hook
 // IMPORTANT: Please adjust the paths below if your image files are located elsewhere.
-import OfficeImage from './Office.png'; // This will still be used for team member placeholders if needed, but not for the main section carousel
-import BuvaneshwarImage from './Buvaneshwar.jpg';
-import MonikaImage from './Monika.jpg';
-import AyeshaImage from './Ayesha.jpg';
 // Import carousel images
 import image1 from './image1.png';
 import image2 from './image2.png';
@@ -110,16 +106,6 @@ function About() {
           color: #ffffff; /* White text for contrast */
           transform: rotateY(180deg); /* Initially rotated to be hidden */
           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-xl */
-        }
-
-        /* Optional: Add a subtle glow for team member images */
-        @keyframes glowing {
-          0% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.4); }
-          50% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.8); }
-          100% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.4); }
-        }
-        .glow {
-          animation: glowing 3s infinite alternate;
         }
 
         /* Carousel specific styles */
@@ -286,23 +272,22 @@ function About() {
               <div className={`flip-card ${teamInView ? 'animate__animated animate__zoomIn animate__delay-0-5s' : ''}`}>
                 <div className="flip-card-inner">
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
-                    <img src={BuvaneshwarImage} alt="Buvaneshwar" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-purple-400 shadow-lg glow" />
+                    <i className="fas fa-cogs text-7xl text-purple-500 mb-6"></i>
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Buvaneshwar</h4>
                     <p className="text-indigo-600 font-semibold mb-3 text-lg">Lead Developer</p>
                     <p className="text-gray-700 text-base leading-relaxed">
-                      Master of code, building robust and scalable web applications with precision and foresight.
+                      As our architectural visionary, he translates complex requirements into elegant, high-performance code, driving our platform's stability and scalability.
                     </p>
                   </div>
                   <div className="flip-card-back p-8 flex flex-col items-center text-center">
                     <h4 className="text-2xl font-bold mb-2">Buvaneshwar</h4>
                     <p className="text-lg mb-4">"Innovating with passion and precision."</p>
                     <p className="text-base leading-relaxed">
-                      Buvaneshwar leads our development team, specializing in creating high-performance, scalable web solutions. He is passionate about clean code and cutting-edge technologies.
+                      With deep expertise in full-stack development and cloud infrastructure, our lead dev ensures our technical foundation is future-proof and mentors the team to foster a culture of excellence.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-instagram"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-linkedin-in"></i></a>
                     </div>
                   </div>
                 </div>
@@ -312,23 +297,22 @@ function About() {
               <div className={`flip-card ${teamInView ? 'animate__animated animate__zoomIn animate__delay-0-7s' : ''}`}>
                 <div className="flip-card-inner">
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
-                    <img src={MonikaImage} alt="Monika" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-indigo-400 shadow-lg glow" />
+                    <i className="fas fa-palette text-7xl text-indigo-500 mb-6"></i>
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Monika</h4>
                     <p className="text-purple-600 font-semibold mb-3 text-lg">Creative Designer</p>
                     <p className="text-gray-700 text-base leading-relaxed">
-                      Visionary designer, crafting intuitive and captivating user interfaces that delight and inspire.
+                      The artist behind our brand's identity, meticulously crafting every pixel to create a seamless, intuitive, and visually stunning user experience that captivates and delights.
                     </p>
                   </div>
                   <div className="flip-card-back p-8 flex flex-col items-center text-center">
                     <h4 className="text-2xl font-bold mb-2">Monika</h4>
-                    <p className="text-lg mb-4">"Design is not just what it looks like and feels like. Design is how it works."</p>
+                    <p className="text-lg mb-4">"Design is not just what it looks like. It's how it works."</p>
                     <p className="text-base leading-relaxed">
-                      Monika is our creative powerhouse, ensuring every user interaction is seamless and aesthetically pleasing. Her designs bring our applications to life.
+                      Blending user-centric research with creative flair results in designs that are not only beautiful but also highly functional. Great design solves problems and tells a compelling story.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-instagram"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-dribbble"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-behance"></i></a>
                     </div>
                   </div>
                 </div>
@@ -338,23 +322,22 @@ function About() {
               <div className={`flip-card ${teamInView ? 'animate__animated animate__zoomIn animate__delay-0-9s' : ''}`}>
                 <div className="flip-card-inner">
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
-                    <img src={AyeshaImage} alt="Ayesha" className="w-32 h-32 rounded-full mb-6 object-cover border-4 border-purple-400 shadow-lg glow" />
+                    <i className="fas fa-rocket text-7xl text-purple-500 mb-6"></i>
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Ayesha</h4>
                     <p className="text-indigo-600 font-semibold mb-3 text-lg">Strategy & Growth</p>
                     <p className="text-gray-700 text-base leading-relaxed">
-                      Strategic thinker, driving the vision and accelerating the growth of SiteOra with keen insights.
+                      Our strategic compass, navigating the market landscape to steer SiteOra towards new horizons. Her vision and business acumen are key to our sustained growth.
                     </p>
                   </div>
                   <div className="flip-card-back p-8 flex flex-col items-center text-center">
                     <h4 className="text-2xl font-bold mb-2">Ayesha</h4>
-                    <p className="text-lg mb-4">"Growth is never by chance; it is the result of forces working together."</p>
+                    <p className="text-lg mb-4">"Growth is the result of forces working together."</p>
                     <p className="text-base leading-relaxed">
-                      Ayesha charts the course for SiteOra's future, identifying opportunities and ensuring our strategic initiatives align with our vision for impactful growth.
+                      Excels at forging key partnerships and identifying emerging trends. This leadership ensures our innovative solutions meet market needs and drive our mission forward.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
-                      <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-instagram"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
+                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-linkedin-in"></i></a>
                     </div>
                   </div>
                 </div>
