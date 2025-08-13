@@ -67,6 +67,9 @@ const useScrollDirection = (isMobileMenuOpen) => {
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnlarged, setIsEnlarged] = useState(false);
+  const [sliderStyle, setSliderStyle] = useState({});
+  const [clickedSection, setClickedSection] = useState(null); // State for immediate click feedback
+  const navRef = useRef(null);
 
   const navLinks = [
     { id: 'home', title: 'Home', icon: 'fas fa-home' },
@@ -78,10 +81,33 @@ function Navbar() {
   ];
 
   const sectionIds = navLinks.map(link => link.id);
-  const activeSection = useActiveSection(sectionIds);
+  const activeSection = useActiveSection(sectionIds); // Active section from scrolling
   const isVisible = useScrollDirection(isMobileMenuOpen);
+  
+  // Determine the current active section, prioritizing clicked over scrolled
+  const currentActive = clickedSection || activeSection;
+
+  // Reset clicked state once the scroll-based active section catches up
+  useEffect(() => {
+    if (clickedSection && activeSection === clickedSection) {
+      setClickedSection(null);
+    }
+  }, [activeSection, clickedSection]);
+
+  // Effect to update the sliding indicator for the active desktop link
+  useEffect(() => {
+    const activeLinkEl = document.getElementById(`nav-${currentActive}`);
+    if (activeLinkEl && navRef.current) {
+      const { offsetLeft, offsetWidth } = activeLinkEl;
+      setSliderStyle({
+        left: `${offsetLeft}px`,
+        width: `${offsetWidth}px`,
+      });
+    }
+  }, [currentActive]); // Depend on the combined active state
 
   const navigateAndScroll = (sectionId) => {
+    setClickedSection(sectionId); // Set clicked section for immediate feedback
     setIsMobileMenuOpen(false);
     document.body.style.overflow = ''; // Re-enable scrolling
     if (sectionId === 'home') {
@@ -134,14 +160,14 @@ function Navbar() {
             {/* Right side: Desktop Nav and Mobile Button Wrapper */}
             <div className="flex items-center">
               {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center relative p-1 bg-gray-100/80 rounded-full border border-gray-200/90">
+              <div ref={navRef} className="hidden md:flex items-center relative p-1 bg-gray-100/80 rounded-full border border-gray-200/90">
                 {navLinks.map(link => (
                   <button
                     key={link.id}
                     id={`nav-${link.id}`}
                     onClick={() => navigateAndScroll(link.id)}
                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none ${
-                      activeSection === link.id
+                      currentActive === link.id
                         ? 'bg-white text-indigo-600 shadow-sm'
                         : 'text-gray-500 hover:text-indigo-600'
                     }`}
@@ -204,11 +230,11 @@ function Navbar() {
                   key={link.id}
                   onClick={() => navigateAndScroll(link.id)}
                   className={`w-full text-left flex items-center gap-4 px-4 py-3 text-lg font-medium transition-all duration-300 rounded-lg ${
-                    activeSection === link.id ? 'bg-indigo-50 text-indigo-700' : 'text-gray-800 hover:bg-gray-100'
+                    currentActive === link.id ? 'bg-indigo-50 text-indigo-700' : 'text-gray-800 hover:bg-gray-100'
                   } ${isMobileMenuOpen ? 'animate-slide-in-right' : ''}`}
                   style={{ animationDelay: `${isMobileMenuOpen ? index * 50 : 0}ms` }}
                 >
-                  <i className={`${link.icon} w-6 text-center text-xl ${activeSection === link.id ? 'text-indigo-600' : 'text-gray-500'}`}></i>
+                  <i className={`${link.icon} w-6 text-center text-xl ${currentActive === link.id ? 'text-indigo-600' : 'text-gray-500'}`}></i>
                   <span>{link.title}</span>
                 </button>
               ))}
