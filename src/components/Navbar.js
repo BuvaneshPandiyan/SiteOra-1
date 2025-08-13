@@ -11,37 +11,27 @@ const useActiveSection = (sectionIds) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        let found = false;
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             setActiveSection(entry.target.id);
-            found = true;
           }
         });
-        // If no section is intersecting, it means we are likely at the top, so 'home' is active.
-        if (!found && window.scrollY < window.innerHeight * 0.5) {
-            setActiveSection('home');
-        }
       },
       {
-        rootMargin: '-40% 0px -60% 0px', // Asymmetrical margin to feel more natural on scroll
-        threshold: 0,
+        rootMargin: '-40% 0px -60% 0px',
+        threshold: 0.5,
       }
     );
 
     sectionIds.forEach((id) => {
       const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
-      }
+      if (element) observer.observe(element);
     });
 
     return () => {
       sectionIds.forEach((id) => {
         const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
+        if (element) observer.unobserve(element);
       });
     };
   }, [sectionIds]);
@@ -51,62 +41,80 @@ const useActiveSection = (sectionIds) => {
 
 /**
  * Custom hook to control navbar visibility based on scroll direction.
+ * @param {boolean} isMobileMenuOpen - Prevents hiding when the mobile menu is active.
  * @returns {boolean} Whether the navbar should be visible.
  */
-const useScrollDirection = () => {
+const useScrollDirection = (isMobileMenuOpen) => {
   const [visible, setVisible] = useState(true);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      if (isMobileMenuOpen) return; // This now works correctly
       const currentScrollY = window.scrollY;
-      if (isMobileMenuOpen) return; // Don't hide navbar if mobile menu is open
-      
-      if (currentScrollY < lastScrollY.current || currentScrollY < 10) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      setVisible(currentScrollY < lastScrollY.current || currentScrollY < 10);
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]); // The hook now correctly depends on isMobileMenuOpen
 
   return visible;
 };
 
-
-// Main Navbar component with upgraded styling and animations
+// Main Navbar component with a complete design overhaul
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnlarged, setIsEnlarged] = useState(false);
+  const [sliderStyle, setSliderStyle] = useState({});
+  const navRef = useRef(null);
 
   const navLinks = [
     { id: 'home', title: 'Home', icon: 'fas fa-home' },
     { id: 'services-section', title: 'Services', icon: 'fas fa-cogs' },
-    { id: 'portfolio', title: 'Portfolio', icon: 'fas fa-th-large' },
-    { id: 'pricing', title: 'Pricing', icon: 'fas fa-dollar-sign' },
-    { id: 'contact', title: 'Contact', icon: 'fas fa-envelope' },
-    { id: 'about', title: 'About', icon: 'fas fa-info-circle' },
+    { id: 'portfolio', title: 'Portfolio', icon: 'fas fa-briefcase' },
+    { id: 'pricing', title: 'Pricing', icon: 'fas fa-tags' },
+    { id: 'contact', title: 'Contact', icon: 'fas fa-paper-plane' },
+    { id: 'about', title: 'About', icon: 'fas fa-user-friends' },
   ];
 
   const sectionIds = navLinks.map(link => link.id);
   const activeSection = useActiveSection(sectionIds);
   const isVisible = useScrollDirection(isMobileMenuOpen);
 
+  // Effect to update the sliding indicator for the active desktop link
+  useEffect(() => {
+    const activeLinkEl = document.getElementById(`nav-${activeSection}`);
+    if (activeLinkEl && navRef.current) {
+      const { offsetLeft, offsetWidth } = activeLinkEl;
+      setSliderStyle({
+        left: `${offsetLeft}px`,
+        width: `${offsetWidth}px`,
+      });
+    }
+  }, [activeSection]);
+
   const navigateAndScroll = (sectionId) => {
     setIsMobileMenuOpen(false);
+    document.body.style.overflow = ''; // Re-enable scrolling
     if (sectionId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = element.offsetTop - 80; // Adjusted for navbar height + extra space
+      const offset = element.offsetTop - 100; // Adjusted for navbar height + extra space
       window.scrollTo({ top: offset, behavior: 'smooth' });
     }
+  };
+  
+  // Toggle mobile menu and body scroll
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prev => {
+      document.body.style.overflow = !prev ? 'hidden' : '';
+      return !prev;
+    });
   };
 
   const toggleEnlarged = (e) => {
@@ -114,58 +122,24 @@ function Navbar() {
     setIsEnlarged(!isEnlarged);
   };
 
-  const DesktopNavLink = ({ sectionId, title }) => {
-    const isActive = activeSection === sectionId;
-    return (
-      <button
-        onClick={() => navigateAndScroll(sectionId)}
-        className={`relative px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 focus:outline-none ${
-          isActive
-            ? 'text-indigo-600 bg-indigo-100/80'
-            : 'text-gray-600 hover:text-indigo-600 hover:bg-gray-200/50'
-        }`}
-      >
-        {title}
-        {isActive && (
-          <span className="absolute inset-x-1 -bottom-1.5 h-0.5 bg-indigo-600 rounded-full motion-safe:animate-fade-in"></span>
-        )}
-      </button>
-    );
-  };
-  
-  const MobileNavLink = ({ sectionId, title, icon }) => {
-    const isActive = activeSection === sectionId;
-    return (
-        <button
-            onClick={() => navigateAndScroll(sectionId)}
-            className={`w-full text-left flex items-center gap-4 px-4 py-3 text-base font-medium transition-colors duration-200 rounded-lg ${
-                isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-100'
-            }`}
-        >
-            <i className={`${icon} w-5 text-center ${isActive ? 'text-indigo-600' : 'text-gray-500'}`}></i>
-            <span>{title}</span>
-        </button>
-    );
-  };
-
   return (
     <>
-      <nav
-        className={`fixed w-full z-50 bg-white/80 backdrop-blur-lg shadow-sm transition-transform duration-300 ease-in-out ${
-          isVisible || isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+      <header
+        className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ease-in-out ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-18 items-center py-2">
+        <nav className="relative max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 flex justify-between items-center h-20 px-6">
             {/* Left side: Logo and Brand */}
-            <button onClick={() => navigateAndScroll('home')} className="flex items-center gap-2 focus:outline-none">
+            <button onClick={() => navigateAndScroll('home')} className="flex items-center gap-2 focus:outline-none group">
               <img
                 src="https://placehold.co/64x64/818cf8/ffffff?text=S"
                 alt="Site Logo"
-                className="w-10 h-10 rounded-full cursor-pointer transition-transform duration-300 hover:scale-110 hover:rotate-6"
+                className="w-11 h-11 rounded-full cursor-pointer transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:shadow-lg"
                 onClick={toggleEnlarged}
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent transition-opacity duration-300 group-hover:opacity-80">
                 SiteOra
               </span>
             </button>
@@ -173,14 +147,29 @@ function Navbar() {
             {/* Right side: Desktop Nav and Mobile Button Wrapper */}
             <div className="flex items-center">
               {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center space-x-1 p-1 bg-gray-100/50 rounded-full border border-gray-200/80">
-                {navLinks.map(link => <DesktopNavLink key={link.id} {...link} />)}
+              <div ref={navRef} className="hidden md:flex items-center relative p-1 bg-gray-100/60 rounded-full border border-gray-200/80">
+                {navLinks.map(link => (
+                  <button
+                    key={link.id}
+                    id={`nav-${link.id}`}
+                    onClick={() => navigateAndScroll(link.id)}
+                    className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 focus:outline-none ${
+                      activeSection === link.id ? 'text-white' : 'text-gray-600 hover:text-black'
+                    }`}
+                  >
+                    {link.title}
+                  </button>
+                ))}
+                <div
+                  className="absolute h-full bg-indigo-500 rounded-full transition-all duration-500 ease-in-out"
+                  style={sliderStyle}
+                ></div>
               </div>
               {/* Mobile Menu Button */}
               <div className="md:hidden ml-4">
                 <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 focus:outline-none"
+                  onClick={toggleMobileMenu}
+                  className="inline-flex items-center justify-center p-2 rounded-full text-gray-800 focus:outline-none bg-gray-100/80"
                   aria-controls="mobile-menu"
                   aria-expanded={isMobileMenuOpen}
                 >
@@ -194,20 +183,43 @@ function Navbar() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Mobile menu */}
+        </nav>
+      </header>
+      
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`md:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
+          isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={toggleMobileMenu}
+      >
         <div
-          className={`md:hidden absolute w-full bg-white transition-all duration-300 ease-in-out shadow-lg border-t border-gray-200 ${
-            isMobileMenuOpen ? 'max-h-96 opacity-100 visible' : 'max-h-0 opacity-0 invisible'
+          className={`absolute right-0 top-0 h-full w-4/5 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
-          id="mobile-menu"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="px-4 pt-4 pb-4 space-y-2">
-            {navLinks.map(link => <MobileNavLink key={link.id} {...link} />)}
+          <div className="p-8 pt-24">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Menu</h2>
+            <div className="space-y-2">
+              {navLinks.map((link, index) => (
+                <button
+                  key={link.id}
+                  onClick={() => navigateAndScroll(link.id)}
+                  className={`w-full text-left flex items-center gap-4 px-4 py-3 text-lg font-medium transition-all duration-300 rounded-lg ${
+                    activeSection === link.id ? 'bg-indigo-50 text-indigo-700' : 'text-gray-800 hover:bg-gray-100'
+                  } ${isMobileMenuOpen ? 'animate-slide-in-right' : ''}`}
+                  style={{ animationDelay: `${isMobileMenuOpen ? index * 50 : 0}ms` }}
+                >
+                  <i className={`${link.icon} w-6 text-center text-xl ${activeSection === link.id ? 'text-indigo-600' : 'text-gray-500'}`}></i>
+                  <span>{link.title}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </nav>
+      </div>
+
 
       {/* Enlarged logo overlay */}
       {isEnlarged && (
@@ -234,11 +246,25 @@ function Navbar() {
           from { transform: scale(0.8); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
         }
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
         .animate-fade-in {
           animation: fade-in 0.3s ease-out forwards;
         }
         .animate-zoom-in {
           animation: zoom-in 0.3s ease-out forwards;
+        }
+        .animate-slide-in-right {
+            animation: slide-in-right 0.4s ease-out forwards;
+            opacity: 0; /* Start hidden */
         }
       `}</style>
     </>
