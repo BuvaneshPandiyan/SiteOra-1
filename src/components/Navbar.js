@@ -67,8 +67,6 @@ const useScrollDirection = (isMobileMenuOpen) => {
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnlarged, setIsEnlarged] = useState(false);
-  const [sliderStyle, setSliderStyle] = useState({});
-  const navRef = useRef(null);
 
   const navLinks = [
     { id: 'home', title: 'Home', icon: 'fas fa-home' },
@@ -82,18 +80,6 @@ function Navbar() {
   const sectionIds = navLinks.map(link => link.id);
   const activeSection = useActiveSection(sectionIds);
   const isVisible = useScrollDirection(isMobileMenuOpen);
-
-  // Effect to update the sliding indicator for the active desktop link
-  useEffect(() => {
-    const activeLinkEl = document.getElementById(`nav-${activeSection}`);
-    if (activeLinkEl && navRef.current) {
-      const { offsetLeft, offsetWidth } = activeLinkEl;
-      setSliderStyle({
-        left: `${offsetLeft}px`,
-        width: `${offsetWidth}px`,
-      });
-    }
-  }, [activeSection]);
 
   const navigateAndScroll = (sectionId) => {
     setIsMobileMenuOpen(false);
@@ -148,7 +134,7 @@ function Navbar() {
             {/* Right side: Desktop Nav and Mobile Button Wrapper */}
             <div className="flex items-center">
               {/* Desktop Navigation */}
-              <div ref={navRef} className="hidden md:flex items-center relative p-1 bg-gray-50/80 rounded-full border border-gray-900/10">
+              <div className="hidden md:flex items-center relative p-1 bg-gray-100/80 rounded-full border border-gray-200/90">
                 {navLinks.map(link => (
                   <button
                     key={link.id}
@@ -156,18 +142,13 @@ function Navbar() {
                     onClick={() => navigateAndScroll(link.id)}
                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none ${
                       activeSection === link.id
-                        ? 'text-white'
-                        : 'text-gray-500 hover:text-gray-900 hover:bg-white/50'
+                        ? 'bg-white text-indigo-600 shadow-sm'
+                        : 'text-gray-500 hover:text-indigo-600'
                     }`}
                   >
                     {link.title}
                   </button>
                 ))}
-                {/* The sliding gradient indicator */}
-                <div
-                  className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-md transition-all duration-500 ease-in-out"
-                  style={sliderStyle}
-                ></div>
               </div>
               {/* Mobile Menu Button */}
               <div className="md:hidden ml-4">
