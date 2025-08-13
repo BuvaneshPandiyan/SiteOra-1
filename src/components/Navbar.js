@@ -148,21 +148,24 @@ function Navbar() {
             {/* Right side: Desktop Nav and Mobile Button Wrapper */}
             <div className="flex items-center">
               {/* Desktop Navigation */}
-              <div ref={navRef} className="hidden md:flex items-center relative p-1 bg-gray-100/60 rounded-full border border-gray-200/80">
+              <div ref={navRef} className="hidden md:flex items-center relative p-1 bg-gray-50/80 rounded-full border border-gray-900/10">
                 {navLinks.map(link => (
                   <button
                     key={link.id}
                     id={`nav-${link.id}`}
                     onClick={() => navigateAndScroll(link.id)}
-                    className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 focus:outline-none ${
-                      activeSection === link.id ? 'text-white' : 'text-gray-600 hover:text-black'
+                    className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none ${
+                      activeSection === link.id
+                        ? 'text-white'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-white/50'
                     }`}
                   >
                     {link.title}
                   </button>
                 ))}
+                {/* The sliding gradient indicator */}
                 <div
-                  className="absolute h-full bg-indigo-500 rounded-full transition-all duration-500 ease-in-out"
+                  className="absolute h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 shadow-md transition-all duration-500 ease-in-out"
                   style={sliderStyle}
                 ></div>
               </div>
