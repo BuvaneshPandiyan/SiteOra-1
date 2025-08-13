@@ -174,11 +174,11 @@ function Navbar() {
                   aria-expanded={isMobileMenuOpen}
                 >
                   <span className="sr-only">Open main menu</span>
-                  {/* New, improved hamburger/X icon */}
-                  <div className="relative w-6 h-6">
-                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-1'}`}></span>
-                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out top-1/2 -translate-y-1/2 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
-                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'bottom-1'}`}></span>
+                  {/* Static Hamburger Icon */}
+                  <div className="space-y-1.5">
+                    <span className="block w-6 h-0.5 bg-current rounded-full"></span>
+                    <span className="block w-6 h-0.5 bg-current rounded-full"></span>
+                    <span className="block w-5 h-0.5 bg-current rounded-full"></span>
                   </div>
                 </button>
               </div>
@@ -200,8 +200,19 @@ function Navbar() {
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-8 pt-24">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">Menu</h2>
+          {/* Menu Header with Title and Close Button */}
+          <div className="flex justify-between items-center p-4 border-b border-gray-200">
+             <h2 className="text-lg font-semibold text-gray-800 ml-2">Menu</h2>
+             <button 
+                onClick={toggleMobileMenu}
+                className="p-2 w-12 h-12 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-800 focus:outline-none"
+             >
+                <span className="sr-only">Close menu</span>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+             </button>
+          </div>
+
+          <div className="p-6">
             <div className="space-y-2">
               {navLinks.map((link, index) => (
                 <button
