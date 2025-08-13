@@ -94,7 +94,14 @@ function Footer({ onNavigate, currentPage, onOpenHiringModal }) {
           <div className="border-t border-gray-700/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 animate__animated animate__fadeInUp" style={{ animationDelay: '0.8s' }}>
             <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All Rights Reserved.</p>
             <div className="flex space-x-6 text-sm">
-              <button onClick={() => onNavigate('privacy-policy')} className="hover:text-white transition-colors duration-300 focus:outline-none">Privacy Policy</button>
+              {/* UPDATED: This is now an anchor tag for downloading the PDF */}
+              <a 
+                href="/PrivacyPolicy.pdf" 
+                download 
+                className="hover:text-white transition-colors duration-300 focus:outline-none"
+              >
+                Privacy Policy
+              </a>
             </div>
           </div>
         </div>
