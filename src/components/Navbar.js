@@ -126,7 +126,8 @@ function Navbar() {
     <>
       <header
         className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ease-in-out ${
-          isVisible ? 'translate-y-0' : '-translate-y-full'
+          // Hide navbar on scroll OR when mobile menu is open
+          (isVisible && !isMobileMenuOpen) ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <nav className="relative max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
