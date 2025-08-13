@@ -169,15 +169,16 @@ function Navbar() {
               <div className="md:hidden ml-4">
                 <button
                   onClick={toggleMobileMenu}
-                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-gray-800 focus:outline-none bg-white/70 border border-gray-900/10 hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-gray-800 focus:outline-none bg-white/70 border border-gray-900/10 hover:bg-gray-100 transition-colors"
                   aria-controls="mobile-menu"
                   aria-expanded={isMobileMenuOpen}
                 >
                   <span className="sr-only">Open main menu</span>
-                  <div className="relative h-6 w-6">
-                    <span className={`absolute block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-1.5'}`}></span>
-                    <span className={`absolute block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
-                    <span className={`absolute block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-1.5'}`}></span>
+                  {/* New, improved hamburger/X icon */}
+                  <div className="relative w-6 h-6">
+                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-1'}`}></span>
+                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out top-1/2 -translate-y-1/2 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+                    <span className={`absolute block w-full h-0.5 bg-current rounded-full transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'bottom-1'}`}></span>
                   </div>
                 </button>
               </div>
