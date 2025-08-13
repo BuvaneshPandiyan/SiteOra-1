@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 function Services() {
   const servicesData = [
     {
       icon: "fas fa-laptop-code",
       title: "Blazing-Fast Static Website Development",
-      description: "Crafting visually stunning and highly optimized websites that load in an instant. Perfect for portfolios, landing pages, business brochures, and informational sites. No backend hassle, just pure front-end power.",
+      description: "Crafting visually stunning and highly optimized websites that load in an instant. Perfect for portfolios, landing pages, business brochures, and informational sites.",
       features: [
         "Future-Proof Static Architecture",
         "Pixel-Perfect Responsive Design",
@@ -16,7 +16,7 @@ function Services() {
     {
       icon: "fas fa-globe-asia",
       title: "Domain & Hosting Package",
-      description: "Secure your professional online identity with a custom domain name, free for the first year. We provide a complimentary SSL certificate for security and leverage powerful platforms that eliminate monthly hosting fees.",
+      description: "Secure your professional online identity with a custom domain name. We provide a complimentary SSL certificate and leverage platforms that eliminate monthly hosting fees.",
       features: [
         "Free Custom Domain (1st Year)",
         "Free SSL/HTTPS Security",
@@ -27,7 +27,7 @@ function Services() {
     {
       icon: "fas fa-hand-holding-usd",
       title: "Annual Maintenance & SEO",
-      description: "After the initial development, an annual fee of ₹4000 covers your domain renewal and ongoing maintenance. This also includes expert SEO to ensure your website ranks high on search engines, making it easily discoverable by your audience.",
+      description: "After development, an annual fee of ₹4000 covers your domain renewal and maintenance. This includes expert SEO to ensure your website ranks high on search engines.",
       features: [
         "Annual Fee: ₹4000",
         "Custom Domain Renewal Included",
@@ -38,7 +38,7 @@ function Services() {
     {
       icon: "fas fa-bullhorn",
       title: "Front-End SEO & Performance Optimization",
-      description: "Ensure your website is discoverable and performs exceptionally. We implement best practices for on-page SEO, semantic HTML, and image optimization to give your site a strong foundation for search engine visibility and a smooth user experience.",
+      description: "We implement best practices for on-page SEO, semantic HTML, and image optimization to give your site a strong foundation for search engine visibility.",
       features: [
         "Keyword-Optimized Content Structure",
         "Lightning-Fast Page Load Times",
@@ -49,7 +49,7 @@ function Services() {
     {
       icon: "fas fa-handshake",
       title: "Direct Contact & Information Websites",
-      description: "We specialize in creating engaging online presences designed purely for information dissemination and direct client contact. Think captivating landing pages, detailed service showcases, and elegant online brochures.",
+      description: "We specialize in creating engaging online presences designed purely for information dissemination and direct client contact, like landing pages and service showcases.",
       features: [
         "Interactive Forms (via third-party services)",
         "Clear Call-to-Action Design",
@@ -60,7 +60,7 @@ function Services() {
     {
       icon: "fas fa-palette",
       title: "Branded UI/UX Design & Prototyping",
-      description: "More than just code, we craft intuitive user interfaces and delightful user experiences. From wireframes to interactive prototypes, we ensure your site is not just functional, but a joy to use and perfectly reflects your brand's aesthetic.",
+      description: "We craft intuitive user interfaces and delightful user experiences. From wireframes to prototypes, we ensure your site reflects your brand's aesthetic.",
       features: [
         "Custom Brand Style Guides",
         "User-Centric Design Principles",
@@ -70,80 +70,69 @@ function Services() {
     },
   ];
 
-  // State to track if the component has been scrolled into view
+  // --- State Hooks ---
   const [inView, setInView] = useState(false);
-  // State for the active card index in the mobile stack
-  const [activeIndex, setActiveIndex] = useState(0);
-  // State for swipe/drag gestures
-  const [startPos, setStartPos] = useState(null);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [visibleCardIndex, setVisibleCardIndex] = useState(0);
 
+  // --- Refs for Observers ---
+  const sectionRef = useRef(null);
+  const cardRefs = useRef([]);
+  cardRefs.current = [];
 
+  const addToRefs = (el) => {
+    if (el && !cardRefs.current.includes(el)) {
+      cardRefs.current.push(el);
+    }
+  };
+
+  // --- Effects for Animations & Interactions ---
+
+  // Observer for the whole section fade-in
   useEffect(() => {
-    const handleScroll = () => {
-      const section = document.getElementById('services-section');
-      if (section) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.7 && rect.bottom > 0) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setInView(true);
+          observer.disconnect();
         }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
-  // --- Combined Swipe/Drag Handlers ---
-  const handleDragStart = (clientX) => {
-    setIsDragging(true);
-    setStartPos(clientX);
-  };
-
-  const handleDragMove = (clientX) => {
-    if (!isDragging || startPos === null) return;
-    setDragOffset(clientX - startPos);
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-
-    // Lowered the swipe distance threshold for a much smoother feel
-    const minSwipeDistance = 40; 
-
-    if (dragOffset > minSwipeDistance) {
-      setActiveIndex((prev) => (prev - 1 + servicesData.length) % servicesData.length);
-    } else if (dragOffset < -minSwipeDistance) {
-      setActiveIndex((prev) => (prev + 1) % servicesData.length);
-    }
-
-    // Reset drag state
-    setIsDragging(false);
-    setStartPos(null);
-    setDragOffset(0);
-  };
-
-  // Touch Events
-  const handleTouchStart = (e) => handleDragStart(e.targetTouches[0].clientX);
-  const handleTouchMove = (e) => handleDragMove(e.targetTouches[0].clientX);
-  const handleTouchEnd = () => handleDragEnd();
-
-  // Mouse Events
-  const handleMouseDown = (e) => handleDragStart(e.clientX);
-  const handleMouseMove = (e) => handleDragMove(e.clientX);
-  const handleMouseUp = () => handleDragEnd();
-  const handleMouseLeave = () => handleDragEnd(); // End drag if mouse leaves the area
-
+  // Observer for the mobile carousel pagination
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.dataset.index, 10);
+            setVisibleCardIndex(index);
+          }
+        });
+      },
+      {
+        root: document.querySelector('.mobile-carousel-container'),
+        threshold: 0.51,
+      }
+    );
+    cardRefs.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+    return () => {
+      cardRefs.current.forEach((card) => {
+        if (card) observer.unobserve(card);
+      });
+    };
+  }, [servicesData.length]);
 
   return (
     <>
       <section
         id="services-section"
+        ref={sectionRef}
         className={`py-20 md:py-32 bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden
           animate__animated ${inView ? 'animate__fadeIn' : 'opacity-0'}`}
       >
@@ -151,7 +140,6 @@ function Services() {
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob motion-reduce:animate-none"></div>
         <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
         <div className="absolute top-1/4 left-1/3 w-56 h-56 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-1000 motion-reduce:animate-none"></div>
-
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 md:mb-24">
@@ -197,31 +185,16 @@ function Services() {
                 >
                   <i className={service.icon}></i>
                 </div>
-                <h3
-                  className={`text-2xl font-extrabold text-gray-900 mb-4 leading-snug group-hover:text-blue-700 transition-colors duration-300
-                    animate__animated ${inView ? 'animate__bounceIn' : 'opacity-0'} motion-safe:animate-text-jiggle motion-reduce:animate-none`}
-                  style={{ animationDelay: inView ? `${0.15 * index + 0.8}s` : '0s' }}
-                >
+                <h3 className="text-2xl font-extrabold text-gray-900 mb-4 leading-snug group-hover:text-blue-700 transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p
-                  className={`text-gray-700 mb-6 leading-relaxed text-opacity-90 tracking-normal
-                    animate__animated ${inView ? 'animate__fadeInLeft' : 'opacity-0'} motion-safe:animate-text-breathe motion-reduce:animate-none`}
-                  style={{ animationDelay: inView ? `${0.15 * index + 1.0}s` : '0s' }}
-                >
+                <p className="text-gray-700 mb-6 leading-relaxed text-opacity-90 tracking-normal">
                   {service.description}
                 </p>
-                <ul
-                  className={`space-y-3
-                    animate__animated ${inView ? 'animate__fadeInUp' : 'opacity-0'} motion-reduce:animate-none`}
-                  style={{ animationDelay: inView ? `${0.15 * index + 1.2}s` : '0s' }}
-                >
+                <ul className="space-y-3">
                   {service.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center text-gray-800">
-                      <i
-                        className={`fas fa-check-circle text-blue-500 mr-3 text-xl transition-transform duration-200 ease-in-out
-                          group-hover:translate-x-1 motion-safe:animate-checkmark-pulse motion-reduce:animate-none`}
-                      ></i>
+                      <i className="fas fa-check-circle text-blue-500 mr-3 text-xl transition-transform duration-200 ease-in-out group-hover:translate-x-1"></i>
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -230,97 +203,56 @@ function Services() {
             ))}
           </div>
 
-          {/* --- Mobile-Only Stacked Card View with Swipe --- */}
+          {/* --- Mobile-Only Horizontal Scroll View --- */}
           <div className="sm:hidden">
-            <div
-              className="relative h-[550px] mt-8 card-stack-container cursor-grab active:cursor-grabbing"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-            >
-              {servicesData.map((service, index) => {
-                const isTopCard = index === activeIndex;
-                const stackPosition = index - activeIndex;
-
-                let style = {
-                  zIndex: servicesData.length - index,
-                  transition: 'all 0.4s ease-out',
-                };
-
-                if (stackPosition < 0) {
-                  style.transform = 'translateX(-120%) rotate(-15deg)';
-                  style.opacity = 0;
-                } else if (isTopCard) {
-                  style.transform = `translateX(${dragOffset}px) rotate(${dragOffset / 20}deg) scale(1.03)`;
-                  if (isDragging) {
-                    style.transition = 'none';
-                  }
-                } else {
-                  style.transform = `translateX(${stackPosition * 15}px) translateY(${stackPosition * -15}px) rotate(${stackPosition * 4}deg) scale(${1 - stackPosition * 0.05})`;
-                  style.opacity = stackPosition > 3 ? 0 : 1;
-                  style.visibility = stackPosition > 3 ? 'hidden' : 'visible';
-                }
-                
-                return (
-                  <div
-                    key={index}
-                    className={`absolute inset-x-0 top-0 bg-white rounded-3xl shadow-xl border p-8 overflow-hidden transition-all duration-500
-                      ${isTopCard ? 'border-blue-400 shadow-2xl' : 'border-gray-100'}
-                    `}
-                    style={style}
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 transition-opacity duration-500 rounded-3xl -z-10 ${isTopCard ? 'opacity-100' : 'opacity-0'}`}></div>
-                    <div className={`absolute -bottom-10 -right-10 w-40 h-40 bg-blue-200 rounded-full transition-all duration-500 ease-in-out -z-10 ${isTopCard ? 'opacity-50 scale-150' : 'opacity-0'}`}></div>
-                    <div
-                      className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg bg-gradient-to-br from-blue-500 to-indigo-600 transition-all duration-300 ease-in-out
-                        ${isTopCard ? 'rotate-6 scale-110 from-indigo-600 to-blue-600' : ''}
-                      `}
-                    >
-                      <i className={service.icon}></i>
-                    </div>
-                    <h3 className={`text-xl font-extrabold text-gray-900 mb-3 leading-snug transition-colors duration-300
-                      ${isTopCard ? 'text-blue-700' : ''}
-                    `}>
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-700 mb-5 leading-relaxed text-sm">
-                      {service.description}
-                    </p>
-                    <ul className="space-y-2">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center text-gray-800 text-sm">
-                          <i
-                            className={`fas fa-check-circle text-blue-500 mr-2 transition-transform duration-200 ease-in-out
-                              ${isTopCard ? 'translate-x-1' : ''}
-                            `}
-                          ></i>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+            <div className="mobile-carousel-container flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-5 pb-5 -mx-4 px-4 scrollbar-hide">
+              {servicesData.map((service, index) => (
+                <div
+                  key={index}
+                  ref={addToRefs}
+                  data-index={index}
+                  className="flex-shrink-0 w-[90%] snap-center bg-white rounded-3xl shadow-xl border border-gray-100 p-8 relative overflow-hidden"
+                >
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg bg-gradient-to-br from-blue-500 to-indigo-600">
+                    <i className={service.icon}></i>
                   </div>
-                );
-              })}
+                  <h3 className="text-xl font-extrabold text-gray-900 mb-3 leading-snug">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-700 mb-5 leading-relaxed text-sm">
+                    {service.description}
+                  </p>
+                  <ul className="space-y-2">
+                    {service.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center text-gray-800 text-sm">
+                        <i className="fas fa-check-circle text-blue-500 mr-2.5 text-lg"></i>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-            <div className="flex justify-center items-center mt-8 space-x-2">
-                {servicesData.map((_, index) => (
-                    <div
-                        key={index}
-                        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                            activeIndex === index ? 'bg-blue-600 scale-125' : 'bg-gray-300'
-                        }`}
-                    ></div>
-                ))}
+            {/* Pagination Dots */}
+            <div className="flex justify-center items-center mt-6 space-x-2">
+              {servicesData.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    visibleCardIndex === index ? 'bg-blue-600 scale-125' : 'bg-gray-300'
+                  }`}
+                ></div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
+      {/* --- Restored Original Custom Styles --- */}
       <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
         @keyframes pulseBackground {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -343,6 +275,7 @@ function Services() {
           background-size: 200% 200%;
           animation: pulseBackground 10s infinite ease-in-out;
         }
+        .animation-delay-1000 { animation-delay: 2s; }
       `}</style>
     </>
   );
