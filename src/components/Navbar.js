@@ -134,7 +134,7 @@ function Navbar() {
             {/* Left side: Logo and Brand */}
             <button onClick={() => navigateAndScroll('home')} className="flex items-center gap-2 focus:outline-none group">
               <img
-                src="https://placehold.co/64x64/818cf8/ffffff?text=S"
+                src="/favicon.png"
                 alt="Site Logo"
                 className="w-11 h-11 rounded-full cursor-pointer transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:shadow-lg"
                 onClick={toggleEnlarged}
@@ -229,7 +229,7 @@ function Navbar() {
           onClick={toggleEnlarged}
         >
           <img
-            src="https://placehold.co/256x256/818cf8/ffffff?text=S"
+            src="/favicon.png"
             alt="Enlarged Site Logo"
             className="w-48 h-48 md:w-64 md:h-64 object-contain animate-zoom-in"
             onClick={(e) => e.stopPropagation()}
