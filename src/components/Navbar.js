@@ -169,7 +169,7 @@ function Navbar() {
               <div className="md:hidden ml-4">
                 <button
                   onClick={toggleMobileMenu}
-                  className="inline-flex items-center justify-center p-2 rounded-full text-gray-800 focus:outline-none bg-gray-100/80"
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-gray-800 focus:outline-none bg-white/70 border border-gray-900/10 hover:bg-gray-50 transition-colors"
                   aria-controls="mobile-menu"
                   aria-expanded={isMobileMenuOpen}
                 >
