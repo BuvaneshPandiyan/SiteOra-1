@@ -67,7 +67,6 @@ const useScrollDirection = (isMobileMenuOpen) => {
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEnlarged, setIsEnlarged] = useState(false);
-  const [sliderStyle, setSliderStyle] = useState({});
   const [clickedSection, setClickedSection] = useState(null); // State for immediate click feedback
   const navRef = useRef(null);
 
@@ -93,18 +92,6 @@ function Navbar() {
       setClickedSection(null);
     }
   }, [activeSection, clickedSection]);
-
-  // Effect to update the sliding indicator for the active desktop link
-  useEffect(() => {
-    const activeLinkEl = document.getElementById(`nav-${currentActive}`);
-    if (activeLinkEl && navRef.current) {
-      const { offsetLeft, offsetWidth } = activeLinkEl;
-      setSliderStyle({
-        left: `${offsetLeft}px`,
-        width: `${offsetWidth}px`,
-      });
-    }
-  }, [currentActive]); // Depend on the combined active state
 
   const navigateAndScroll = (sectionId) => {
     setClickedSection(sectionId); // Set clicked section for immediate feedback
