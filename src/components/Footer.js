@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
-import 'animate.css'; // Ensure animate.css is imported
+import React, { useState, useEffect } from 'react';
+
+// The 'animate.css' import is removed from here.
+// We will load it dynamically using a useEffect hook.
 
 function Footer({ onNavigate, currentPage, onOpenHiringModal }) {
   // State to manage the enlarged logo view
   const [isLogoEnlarged, setIsLogoEnlarged] = useState(false);
+
+  // Load animate.css stylesheet dynamically
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
+    document.head.appendChild(link);
+
+    // Cleanup function to remove the stylesheet when the component unmounts
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []); // Empty dependency array ensures this runs only once when the component mounts
 
   // Function to toggle the enlarged state
   const toggleLogoEnlarged = (e) => {
@@ -80,11 +95,10 @@ function Footer({ onNavigate, currentPage, onOpenHiringModal }) {
                 <li><a href="mailto:siteorawebsolutions@gmail.com" className="group text-gray-300 hover:text-white transition-colors duration-300 flex items-center justify-center md:justify-start"><i className="fas fa-envelope mr-3 text-purple-400 group-hover:scale-110 transition-transform"></i>siteorawebsolutions@gmail.com</a></li>
                 <li><a href="https://www.google.com/maps/search/?api=1&query=Chennai,Tamil+Nadu,India" target="_blank" rel="noopener noreferrer" className="group text-gray-300 hover:text-white transition-colors duration-300 flex items-center justify-center md:justify-start"><i className="fas fa-map-marker-alt mr-3 text-purple-400 group-hover:scale-110 transition-transform"></i>Chennai, Tamil Nadu</a></li>
               </ul>
+              {/* Social media icons */}
               <div className="flex justify-center md:justify-start space-x-6">
-                <a href="https://linkedin.com/company/yourcompany" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-linkedin-in text-2xl"></i></a>
-                <a href="https://twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-twitter text-2xl"></i></a>
-                <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-instagram text-2xl"></i></a>
-                <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-facebook-f text-2xl"></i></a>
+                <a href="https://instagram.com/siteoraofficial" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-instagram text-2xl"></i></a>
+                <a href="https://wa.me/917338816479" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300 transform hover:scale-125 hover:-translate-y-1"><i className="fab fa-whatsapp text-2xl"></i></a>
               </div>
             </div>
 
@@ -94,7 +108,6 @@ function Footer({ onNavigate, currentPage, onOpenHiringModal }) {
           <div className="border-t border-gray-700/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-500 animate__animated animate__fadeInUp" style={{ animationDelay: '0.8s' }}>
             <p className="mb-4 md:mb-0 text-sm">© {new Date().getFullYear()} SiteOra. All Rights Reserved.</p>
             <div className="flex space-x-6 text-sm">
-              {/* UPDATED: This is now an anchor tag for downloading the PDF */}
               <a 
                 href="/PrivacyPolicy.pdf" 
                 download 
