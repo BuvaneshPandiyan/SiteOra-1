@@ -274,7 +274,7 @@ function About() {
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
                     <i className="fas fa-cogs text-7xl text-purple-500 mb-6"></i>
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Buvaneshwar</h4>
-                    <p className="text-indigo-600 font-semibold mb-3 text-lg">Lead Developer</p>
+                    <p className="text-indigo-600 font-semibold mb-3 text-lg">Lead Developer | Founder | CEO</p>
                     <p className="text-gray-700 text-base leading-relaxed">
                       As our architectural visionary, he translates complex requirements into elegant, high-performance code, driving our platform's stability and scalability.
                     </p>
