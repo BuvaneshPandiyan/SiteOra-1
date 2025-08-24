@@ -274,8 +274,8 @@ function About() {
                   <div className="flip-card-front p-8 flex flex-col items-center text-center">
                     <i className="fas fa-cogs text-7xl text-purple-500 mb-6"></i>
                     <h4 className="text-2xl font-bold text-gray-900 mb-2">Buvaneshwar</h4>
-<p className="text-indigo-600 font-semibold mb-3 text-lg">Founder & CEO</p>
-            <p className="text-gray-700 text-base leading-relaxed">
+                    <p className="text-indigo-600 font-semibold mb-3 text-lg">Founder & CEO</p>
+                    <p className="text-gray-700 text-base leading-relaxed">
                       As our architectural visionary, he translates complex requirements into elegant, high-performance code, driving our platform's stability and scalability.
                     </p>
                   </div>
@@ -286,8 +286,8 @@ function About() {
                       With deep expertise in full-stack development and cloud infrastructure, our lead dev ensures our technical foundation is future-proof and mentors the team to foster a culture of excellence.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-github"></i></a>
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-linkedin-in"></i></a>
+                      <span className="text-white text-2xl"><i className="fab fa-github"></i></span>
+                      <span className="text-white text-2xl"><i className="fab fa-linkedin-in"></i></span>
                     </div>
                   </div>
                 </div>
@@ -311,8 +311,8 @@ function About() {
                       Blending user-centric research with creative flair results in designs that are not only beautiful but also highly functional. Great design solves problems and tells a compelling story.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-dribbble"></i></a>
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-behance"></i></a>
+                      <span className="text-white text-2xl"><i className="fab fa-dribbble"></i></span>
+                      <span className="text-white text-2xl"><i className="fab fa-behance"></i></span>
                     </div>
                   </div>
                 </div>
@@ -336,8 +336,8 @@ function About() {
                       Excels at forging key partnerships and identifying emerging trends. This leadership ensures our innovative solutions meet market needs and drive our mission forward.
                     </p>
                     <div className="flex space-x-4 mt-5">
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-twitter"></i></a>
-                       <a href="#" className="text-white hover:text-purple-200 text-2xl transform hover:scale-125 transition-transform duration-300"><i className="fab fa-linkedin-in"></i></a>
+                      <span className="text-white text-2xl"><i className="fab fa-twitter"></i></span>
+                      <span className="text-white text-2xl"><i className="fab fa-linkedin-in"></i></span>
                     </div>
                   </div>
                 </div>
