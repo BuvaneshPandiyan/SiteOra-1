@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+// Assuming your images are in src/assets/images/
+import CarouselImage1 from '../assets/images/CarouselImage1.jpg';
+import CarouselImage2 from '../assets/images/CarouselImage2.jpg';
+import CarouselImage3 from '../assets/images/CarouselImage3.jpg';
+import CarouselImage4 from '../assets/images/CarouselImage4.jpg';
+import CarouselImage5 from '../assets/images/CarouselImage4.jpg';
 
-// --- UPDATED: Importing local images from the same folder ---
-import CarouselImage1 from '../assets/images/CarouselImage1.jpg'
-import CarouselImage2 from '../assets/images/CarouselImage2.jpg'
-import CarouselImage3 from '../assets/images/CarouselImage3.jpg'
-import CarouselImage4 from '../assets/images/CarouselImage4.jpg'
-import CarouselImage5 from '../assets/images/CarouselImage4.jpg'
 const carouselImages = [
   CarouselImage1,
   CarouselImage2,
@@ -15,21 +15,16 @@ const carouselImages = [
 ];
 
 function Hero() {
-  // State to track the current image index for the carousel
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // useEffect to handle the auto-playing carousel logic
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % carouselImages.length);
-    }, 5000); // Change image every 5 seconds
-
-    // Cleanup interval on component unmount
+    }, 5000);
     return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
-    // Typewriter effect logic
     const typewriterElement = document.querySelector('.typewriter-text');
     if (!typewriterElement) return;
 
@@ -68,13 +63,13 @@ function Hero() {
   const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    <section id="home" className="relative overflow-hidden -mt-12 h-screen flex items-center">
+    // --- FIXED: Replaced h-screen with min-h-screen and removed negative margin. Added padding for navbar spacing. ---
+    <section id="home" className="relative overflow-hidden min-h-screen flex items-center pt-24 pb-12">
       
-      {/* --- Background Carousel Container --- */}
       <div className="absolute inset-0 z-0">
         {carouselImages.map((src, index) => (
           <img
-            key={src}
+            key={index} // Use index for key as src might not be unique if an image is repeated
             src={src}
             alt="Dynamic background"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
@@ -82,13 +77,12 @@ function Hero() {
             }`}
           />
         ))}
-        {/* Dark overlay to ensure text is readable */}
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-16">
+      {/* --- FIXED: Removed mt-16 as padding is now on the parent section --- */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Left Column: Text Content and Buttons */}
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-6 drop-shadow-lg">
               Crafting Digital <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Masterpieces</span>
@@ -108,9 +102,8 @@ function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Animated Mockup */}
-          <div className="relative flex justify-center lg:justify-end">
-             {/* Blobs are now behind the mockup for a layered effect */}
+          {/* --- FIXED: Hide this entire block on mobile to prevent unnecessary rendering --- */}
+          <div className="relative hidden lg:flex justify-center lg:justify-end">
             <div className="absolute -top-10 -left-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob"></div>
             <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-indigo-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
             
@@ -144,7 +137,6 @@ function Hero() {
         }
         .animate-blob { animation: blob 7s infinite cubic-bezier(0.6, 0.01, 0.3, 0.9); }
         .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
       `}</style>
     </section>
   );
