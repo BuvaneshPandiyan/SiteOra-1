@@ -5,7 +5,7 @@ import CarouselImage1 from '../assets/images/CarouselImage1.jpg'
 import CarouselImage2 from '../assets/images/CarouselImage2.jpg'
 import CarouselImage3 from '../assets/images/CarouselImage3.jpg'
 import CarouselImage4 from '../assets/images/CarouselImage4.jpg'
-import CarouselImage5 from '../assets/images/CarouselImage5.jpg'
+import CarouselImage5 from '../assets/images/CarouselImage4.jpg'
 const carouselImages = [
   CarouselImage1,
   CarouselImage2,
