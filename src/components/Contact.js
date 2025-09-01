@@ -118,7 +118,7 @@ Looking forward to hearing back!
         `}
       </style>
 
-      <section id="contact" className="py-16 bg-gradient-to-br from-gray-50 to-indigo-100 min-h-screen flex items-center justify-center opacity-0 animate-fadeIn">
+      <section id="contact" className="py-16 bg-gradient-to-br from-gray-50 to-indigo-100 min-h-screen flex items-center justify-center opacity-0 animate-fadeIn mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-3xl shadow-2xl overflow-hidden">
             {/* Left Column: Contact Info */}
