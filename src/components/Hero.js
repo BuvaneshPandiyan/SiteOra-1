@@ -86,7 +86,7 @@ function Hero() {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-12">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
           {/* Left Column: Text Content and Buttons */}
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
