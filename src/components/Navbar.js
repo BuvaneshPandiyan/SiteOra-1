@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 /**
  * Custom hook to control navbar visibility.
- * FIX: Now only shows the navbar when the user is at the very top of the page.
+ * Shows the navbar only when the user is at the very top of the page.
  */
 const useScrollDirection = (isMobileMenuOpen) => {
   const [visible, setVisible] = useState(true);
@@ -12,7 +12,6 @@ const useScrollDirection = (isMobileMenuOpen) => {
     const handleScroll = () => {
       if (isMobileMenuOpen) return;
       const currentScrollY = window.scrollY;
-      // Only set visible to true if the scroll position is less than 10px from the top.
       setVisible(currentScrollY < 10);
     };
 
@@ -58,16 +57,18 @@ function Navbar() {
 
   return (
     <>
-      {/* FIX: The background styles are now on the header itself.
-        The header is fixed to the top with a top-padding to create space.
-        This removes the "white bar" issue.
+      {/*
+        FIX: The entire fixed header is now positioned 1rem from the top using `top-4`.
+        This moves the whole component down, showing the Hero component's carousel
+        in the space above instead of a white bar.
       */}
       <header
-        className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ease-in-out pt-4 ${
+        className={`fixed w-full top-4 left-0 z-50 transition-transform duration-300 ease-in-out ${
           (isVisible && !isMobileMenuOpen) ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* The inner nav container NO LONGER has a margin-top */}
+        <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 flex justify-between items-center h-20 px-6">
             <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 focus:outline-none group">
               <img
