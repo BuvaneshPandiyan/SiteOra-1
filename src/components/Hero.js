@@ -16,14 +16,34 @@ const carouselImages = [
 
 function Hero() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
+  // Preload images to ensure a smooth transition
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % carouselImages.length);
-    }, 5000);
-    return () => clearInterval(intervalId);
+    let loadedCount = 0;
+    const totalImages = carouselImages.length;
+    carouselImages.forEach((image) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = image;
+    });
   }, []);
 
+  // Carousel auto-play interval
+  useEffect(() => {
+    if (!imagesLoaded) return; // Wait for images to load before starting
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, [imagesLoaded]);
+
+  // Typewriter effect logic
   useEffect(() => {
     const typewriterElement = document.querySelector('.typewriter-text');
     if (!typewriterElement) return;
@@ -39,7 +59,7 @@ function Hero() {
       if (isDeleting) {
         typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex - 1);
         currentLetterIndex--;
-        typingSpeed = 100;
+        typingSpeed = 50; // Faster backspace speed
       } else {
         typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex + 1);
         currentLetterIndex++;
@@ -63,26 +83,26 @@ function Hero() {
   const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    // --- FIXED: Replaced h-screen with min-h-screen and removed negative margin. Added padding for navbar spacing. ---
-    <section id="home" className="relative overflow-hidden min-h-screen flex items-center pt-24 pb-12">
+    <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pt-24 pb-12">
       
-      <div className="absolute inset-0 z-0">
+      {/* Background Carousel */}
+      <div className="absolute inset-0 z-0 bg-black">
         {carouselImages.map((src, index) => (
           <img
-            key={index} // Use index for key as src might not be unique if an image is repeated
+            key={index}
             src={src}
             alt="Dynamic background"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              index === currentImageIndex && imagesLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           />
         ))}
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       </div>
 
-      {/* --- FIXED: Removed mt-16 as padding is now on the parent section --- */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+      {/* Hero Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center w-full">
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-6 drop-shadow-lg">
               Crafting Digital <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Masterpieces</span>
@@ -95,18 +115,15 @@ function Hero() {
                 Get Started
                 <svg className="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </a>
-               <a href="#portfolio" className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+              <a href="#portfolio" className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-100">
                 How We Work
                 <svg className="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
               </a>
             </div>
           </div>
-
-          {/* --- FIXED: Hide this entire block on mobile to prevent unnecessary rendering --- */}
           <div className="relative hidden lg:flex justify-center lg:justify-end">
             <div className="absolute -top-10 -left-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob"></div>
             <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-indigo-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-            
             <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden transform rotate-3 hover:rotate-0 transition-transform duration-500 ease-in-out w-full max-w-md">
               <div className="bg-gray-900/50 py-3 px-5 flex items-center rounded-t-3xl">
                 <div className="flex space-x-2"><div className="w-3 h-3 rounded-full bg-red-500"></div><div className="w-3 h-3 rounded-full bg-yellow-500"></div><div className="w-3 h-3 rounded-full bg-green-500"></div></div>
@@ -143,4 +160,3 @@ function Hero() {
 }
 
 export default Hero;
-
