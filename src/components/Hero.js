@@ -4,7 +4,7 @@ import CarouselImage1 from '../assets/images/CarouselImage1.jpg';
 import CarouselImage2 from '../assets/images/CarouselImage2.jpg';
 import CarouselImage3 from '../assets/images/CarouselImage3.jpg';
 import CarouselImage4 from '../assets/images/CarouselImage4.jpg';
-import CarouselImage5 from '../assets/images/CarouselImage4.jpg';
+import CarouselImage5 from '../assets/images/CarouselImage4.jpg'; // Note: You have CarouselImage4 listed twice
 
 const carouselImages = [
   CarouselImage1,
@@ -36,7 +36,7 @@ function Hero() {
 
   // Carousel auto-play interval
   useEffect(() => {
-    if (!imagesLoaded) return; // Wait for images to load before starting
+    if (!imagesLoaded) return;
     const intervalId = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
     }, 5000);
@@ -59,7 +59,7 @@ function Hero() {
       if (isDeleting) {
         typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex - 1);
         currentLetterIndex--;
-        typingSpeed = 50; // Faster backspace speed
+        typingSpeed = 50;
       } else {
         typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex + 1);
         currentLetterIndex++;
@@ -83,10 +83,10 @@ function Hero() {
   const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    // FIX: Main section now has NO top padding.
+    // This section is now correctly positioned to start at the very top of the page (top: 0).
     <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pb-12">
       
-      {/* Background Carousel - This will now start at the very top of the viewport, behind the navbar. */}
+      {/* The absolutely positioned carousel background now correctly fills the entire section, sitting behind the fixed navbar. */}
       <div className="absolute inset-0 z-0 bg-black">
         {carouselImages.map((src, index) => (
           <img
@@ -101,8 +101,11 @@ function Hero() {
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       </div>
 
-      {/* Hero Content - Add padding-top here to clear the fixed navbar. Adjust pt-XX to match your navbar's height. */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center pt-24">
+      {/* FIX: The top padding (pt-28) is applied here, to the CONTENT container.
+        This pushes your text and buttons down so they don't hide behind the navbar, 
+        without creating a "white bar" at the top of the page.
+      */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center pt-28">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center w-full">
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-6 drop-shadow-lg">
