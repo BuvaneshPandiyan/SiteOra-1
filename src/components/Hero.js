@@ -83,7 +83,8 @@ function Hero() {
   const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pt-24 pb-12">
+    // FIX: Removed `pt-24` from this section to prevent the white gap at the top.
+    <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pb-12">
       
       {/* Background Carousel */}
       <div className="absolute inset-0 z-0 bg-black">
@@ -101,7 +102,7 @@ function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center pt-24">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center w-full">
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-6 drop-shadow-lg">
