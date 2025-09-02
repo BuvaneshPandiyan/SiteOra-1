@@ -1,190 +1,166 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+// Assuming your images are in src/assets/images/
+import CarouselImage1 from '../assets/images/CarouselImage1.jpg';
+import CarouselImage2 from '../assets/images/CarouselImage2.jpg';
+import CarouselImage3 from '../assets/images/CarouselImage3.jpg';
+import CarouselImage4 from '../assets/images/CarouselImage4.jpg';
+import CarouselImage5 from '../assets/images/CarouselImage4.jpg'; // Note: You have CarouselImage4 listed twice
 
-/**
- * Custom hook to control navbar visibility.
- * Shows the navbar only when the user is at the very top of the page.
- */
-const useScrollDirection = (isMobileMenuOpen) => {
-  const [visible, setVisible] = useState(true);
+const carouselImages = [
+  CarouselImage1,
+  CarouselImage2,
+  CarouselImage3,
+  CarouselImage4,
+  CarouselImage5,
+];
 
+function Hero() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images to ensure a smooth transition
   useEffect(() => {
-    const handleScroll = () => {
-      if (isMobileMenuOpen) return;
-      const currentScrollY = window.scrollY;
-      setVisible(currentScrollY < 10);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobileMenuOpen]);
-
-  return visible;
-};
-
-function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isEnlarged, setIsEnlarged] = useState(false);
-  const location = useLocation();
-
-  const navLinks = [
-    { id: 'home', title: 'Home', path: '/', icon: 'fas fa-home' },
-    { id: 'services', title: 'Services', path: '/services', icon: 'fas fa-cogs' },
-    { id: 'portfolio', title: 'Portfolio', path: '/portfolio', icon: 'fas fa-briefcase' },
-    { id: 'pricing', title: 'Pricing', path: '/pricing', icon: 'fas fa-tags' },
-    { id: 'about', title: 'About', path: '/about', icon: 'fas fa-user-friends' },
-    { id: 'contact', title: 'Contact', path: '/contact', icon: 'fas fa-paper-plane' },
-  ];
-
-  const isVisible = useScrollDirection(isMobileMenuOpen);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(prev => {
-      document.body.style.overflow = !prev ? 'hidden' : '';
-      return !prev;
+    let loadedCount = 0;
+    const totalImages = carouselImages.length;
+    carouselImages.forEach((image) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = image;
     });
-  };
+  }, []);
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-    document.body.style.overflow = '';
-  }
+  // Carousel auto-play interval
+  useEffect(() => {
+    if (!imagesLoaded) return;
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, [imagesLoaded]);
 
-  const toggleEnlarged = (e) => {
-    e.stopPropagation();
-    setIsEnlarged(!isEnlarged);
-  };
+  // Typewriter effect logic
+  useEffect(() => {
+    const typewriterElement = document.querySelector('.typewriter-text');
+    if (!typewriterElement) return;
+
+    let phrases = ["Web Development", "E-Commerce", "UI/UX Design", "SEO Optimization", "Mobile Apps"];
+    let currentPhraseIndex = 0;
+    let currentLetterIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 150;
+
+    function typeWriter() {
+      const currentPhrase = phrases[currentPhraseIndex];
+      if (isDeleting) {
+        typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex - 1);
+        currentLetterIndex--;
+        typingSpeed = 50;
+      } else {
+        typewriterElement.textContent = currentPhrase.substring(0, currentLetterIndex + 1);
+        currentLetterIndex++;
+        typingSpeed = 150;
+      }
+      if (!isDeleting && typewriterElement.textContent === currentPhrase) {
+        isDeleting = true;
+        typingSpeed = 2000;
+      } else if (isDeleting && typewriterElement.textContent === '') {
+        isDeleting = false;
+        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+        typingSpeed = 500;
+      }
+      setTimeout(typeWriter, typingSpeed);
+    }
+    const timeoutId = setTimeout(typeWriter, 1000);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  const whatsappMessage = encodeURIComponent("Hello, I'm interested in crafting digital masterpieces like web development, e-commerce, UI/UX design, SEO optimization, and mobile apps. Can you tell me more?");
+  const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    <>
-      {/*
-        FIX: The entire fixed header is now positioned 1rem from the top using `top-4`.
-        This moves the whole component down, showing the Hero component's carousel
-        in the space above instead of a white bar.
-      */}
-      <header
-        className={`fixed w-full top-4 left-0 z-50 transition-transform duration-300 ease-in-out ${
-          (isVisible && !isMobileMenuOpen) ? 'translate-y-0' : '-translate-y-full'
-        }`}
-      >
-        {/* The inner nav container NO LONGER has a margin-top */}
-        <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 flex justify-between items-center h-20 px-6">
-            <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 focus:outline-none group">
-              <img
-                src="/favicon.png"
-                alt="Site Logo"
-                className="w-11 h-11 rounded-full cursor-pointer transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:shadow-lg"
-                onClick={toggleEnlarged}
-              />
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent transition-opacity duration-300 group-hover:opacity-80">
-                SiteOra
-              </span>
-            </Link>
+    // This section is now correctly positioned to start at the very top of the page (top: 0).
+    <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pb-12">
+      
+      {/* The absolutely positioned carousel background now correctly fills the entire section, sitting behind the fixed navbar. */}
+      <div className="absolute inset-0 z-0 bg-black">
+        {carouselImages.map((src, index) => (
+          <img
+            key={index}
+            src={src}
+            alt="Dynamic background"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex && imagesLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      </div>
 
-            <div className="flex items-center">
-              <div className="hidden md:flex items-center relative p-1 bg-gray-100/80 rounded-full border border-gray-200/90">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.id}
-                    to={link.path}
-                    className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none ${
-                      location.pathname === link.path
-                        ? 'bg-white text-indigo-600 shadow-sm'
-                        : 'text-gray-500 hover:text-indigo-600'
-                    }`}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-              </div>
-              <div className="md:hidden ml-4">
-                <button
-                  onClick={toggleMobileMenu}
-                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-gray-800 focus:outline-none bg-white/70 border border-gray-900/10 hover:bg-gray-100 transition-colors"
-                >
-                  <span className="sr-only">Open main menu</span>
-                  <div className="space-y-1.5">
-                    <span className="block w-6 h-0.5 bg-current rounded-full"></span>
-                    <span className="block w-6 h-0.5 bg-current rounded-full"></span>
-                    <span className="block w-5 h-0.5 bg-current rounded-full"></span>
-                  </div>
-                </button>
-              </div>
+      {/* FIX: The top padding (pt-28) is applied here, to the CONTENT container.
+        This pushes your text and buttons down so they don't hide behind the navbar, 
+        without creating a "white bar" at the top of the page.
+      */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center pt-28">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center w-full">
+          <div className="mb-12 lg:mb-0 text-center lg:text-left">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-6 drop-shadow-lg">
+              Crafting Digital <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Masterpieces</span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-lg mx-auto lg:mx-0">
+              We transform ideas into stunning, high-performance websites that drive results and captivate audiences.
+            </p>
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+                Get Started
+                <svg className="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+              <a href="#portfolio" className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+                How We Work
+                <svg className="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+              </a>
             </div>
           </div>
-        </nav>
-      </header>
-      
-      {/* --- Mobile Menu and Image Modal (No changes needed here) --- */}
-      <div
-        className={`md:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
-          isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={toggleMobileMenu}
-      >
-        <div
-          className={`absolute right-0 top-0 h-full w-4/5 max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex justify-between items-center p-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-800 ml-2">Menu</h2>
-            <button 
-              onClick={toggleMobileMenu}
-              className="p-2 w-12 h-12 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-800 focus:outline-none"
-            >
-              <span className="sr-only">Close menu</span>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-          </div>
-          <div className="p-6">
-            <div className="space-y-2">
-              {navLinks.map((link, index) => (
-                <Link
-                  key={link.id}
-                  to={link.path}
-                  onClick={closeMobileMenu}
-                  className={`w-full text-left flex items-center gap-4 px-4 py-3 text-lg font-medium transition-all duration-300 rounded-lg ${
-                    location.pathname === link.path ? 'bg-indigo-50 text-indigo-700' : 'text-gray-800 hover:bg-gray-100'
-                  } ${isMobileMenuOpen ? 'animate-slide-in-right' : ''}`}
-                  style={{ animationDelay: `${isMobileMenuOpen ? index * 50 : 0}ms` }}
-                >
-                  <i className={`${link.icon} w-6 text-center text-xl ${location.pathname === link.path ? 'text-indigo-600' : 'text-gray-500'}`}></i>
-                  <span>{link.title}</span>
-                </Link>
-              ))}
+          <div className="relative hidden lg:flex justify-center lg:justify-end">
+            <div className="absolute -top-10 -left-10 w-48 h-48 bg-purple-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob"></div>
+            <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-indigo-400 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+            <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden transform rotate-3 hover:rotate-0 transition-transform duration-500 ease-in-out w-full max-w-md">
+              <div className="bg-gray-900/50 py-3 px-5 flex items-center rounded-t-3xl">
+                <div className="flex space-x-2"><div className="w-3 h-3 rounded-full bg-red-500"></div><div className="w-3 h-3 rounded-full bg-yellow-500"></div><div className="w-3 h-3 rounded-full bg-green-500"></div></div>
+              </div>
+              <div className="p-6">
+                <div className="bg-white/90 rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                  <div className="bg-indigo-600 px-5 py-3 text-white font-medium text-lg">Modern Web Interface</div>
+                  <div className="p-5">
+                    <div className="h-5 bg-gray-200 rounded w-3/4 mb-3"></div>
+                    <div className="h-5 bg-gray-200 rounded w-1/2 mb-6"></div>
+                    <div className="h-28 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center border border-indigo-200">
+                      <span className="text-indigo-700 font-bold text-xl typewriter-text"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      {isEnlarged && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer p-4 animate-fade-in"
-          onClick={toggleEnlarged}
-        >
-          <img
-            src="/favicon.png"
-            alt="Enlarged Site Logo"
-            className="w-48 h-48 md:w-64 md:h-64 object-contain animate-zoom-in"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-
+      
       <style jsx>{`
-        /* Your existing keyframes CSS here */
-        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes zoom-in { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes slide-in-right { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-        .animate-zoom-in { animation: zoom-in 0.3s ease-out forwards; }
-        .animate-slide-in-right { animation: slide-in-right 0.4s ease-out forwards; opacity: 0; }
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite cubic-bezier(0.6, 0.01, 0.3, 0.9); }
+        .animation-delay-2000 { animation-delay: 2s; }
       `}</style>
-    </>
+    </section>
   );
 }
 
-export default Navbar;
+export default Hero;
