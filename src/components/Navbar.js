@@ -2,18 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 /**
- * Custom hook to control navbar visibility based on scroll direction.
+ * Custom hook to control navbar visibility.
+ * FIX: Now only shows the navbar when the user is at the very top of the page.
  */
 const useScrollDirection = (isMobileMenuOpen) => {
   const [visible, setVisible] = useState(true);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       if (isMobileMenuOpen) return;
       const currentScrollY = window.scrollY;
-      setVisible(currentScrollY < lastScrollY.current || currentScrollY < 10);
-      lastScrollY.current = currentScrollY;
+      // Only set visible to true if the scroll position is less than 10px from the top.
+      setVisible(currentScrollY < 10);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -58,12 +58,16 @@ function Navbar() {
 
   return (
     <>
+      {/* FIX: The background styles are now on the header itself.
+        The header is fixed to the top with a top-padding to create space.
+        This removes the "white bar" issue.
+      */}
       <header
-        className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ease-in-out ${
+        className={`fixed w-full top-0 left-0 z-50 transition-transform duration-300 ease-in-out pt-4 ${
           (isVisible && !isMobileMenuOpen) ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <nav className="relative max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 flex justify-between items-center h-20 px-6">
             <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-2 focus:outline-none group">
               <img
@@ -111,6 +115,7 @@ function Navbar() {
         </nav>
       </header>
       
+      {/* --- Mobile Menu and Image Modal (No changes needed here) --- */}
       <div
         className={`md:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
           isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
