@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-// --- UPDATED: Importing local images as requested ---
+// Re-including the local image imports as requested
 import GenZMilletImage from '../assets/images/GenZMilletImage.png';
 import TwizzleTeesImage from '../assets/images/TwizzleTeesImage.png';
 
@@ -26,7 +26,7 @@ const ProjectCard = ({ title, description, tags, imageUrl, align }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.25 });
   const isRight = align === 'right';
   
-  // --- State and logic for 3D tilt effect ---
+  // State and logic for 3D tilt effect
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
@@ -34,8 +34,8 @@ const ProjectCard = ({ title, description, tags, imageUrl, align }) => {
     const currentCard = cardRef.current;
     if (!currentCard) return;
 
-    // Check for touch device to decide which effect to use
-    const isTouchDevice = 'ontouchstart' in window;
+    // Check for touch device to disable parallax
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
     // Mouse-based parallax for desktop
     const handleMouseMove = (e) => {
@@ -53,69 +53,58 @@ const ProjectCard = ({ title, description, tags, imageUrl, align }) => {
       setTilt({ x: 0, y: 0 }); // Reset tilt
     };
 
-    // Gyroscope-based parallax for mobile
-    const handleDeviceOrientation = (e) => {
-        // e.beta is front-to-back tilt, e.gamma is left-to-right
-        const tiltX = e.beta ? Math.min(Math.max(e.beta - 45, -15), 15) * -1 : 0;
-        const tiltY = e.gamma ? Math.min(Math.max(e.gamma, -15), 15) : 0;
-        setTilt({ x: tiltX, y: tiltY });
-    };
-
-    if (isTouchDevice && window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-    } else {
-        currentCard.addEventListener('mousemove', handleMouseMove);
-        currentCard.addEventListener('mouseleave', handleMouseLeave);
+    // Only apply mouse listeners if it's not a touch device
+    if (!isTouchDevice) {
+      currentCard.addEventListener('mousemove', handleMouseMove);
+      currentCard.addEventListener('mouseleave', handleMouseLeave);
     }
 
     return () => {
-      if (isTouchDevice && window.DeviceOrientationEvent) {
-          window.removeEventListener('deviceorientation', handleDeviceOrientation);
-      } else if (currentCard) {
-          currentCard.removeEventListener('mousemove', handleMouseMove);
-          currentCard.removeEventListener('mouseleave', handleMouseLeave);
+      if (!isTouchDevice && currentCard) {
+        currentCard.removeEventListener('mousemove', handleMouseMove);
+        currentCard.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
   }, []);
 
   return (
     <div ref={ref}>
-        <div 
-            ref={cardRef}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center transition-transform duration-300 ease-out"
-            style={{ 
-                transformStyle: 'preserve-3d',
-                transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
-            }}
-        >
-        {/* --- UPGRADED: Image Column with Pattern Background --- */}
-        <div 
-            className={`relative transition-all duration-1000 ease-out group ${isRight ? 'lg:order-last' : ''} ${inView ? 'opacity-100' : 'opacity-0'}`}
-            style={{ transform: 'translateZ(30px)' }} // Pull image forward
-        >
-            <div className={`absolute -inset-4 bg-indigo-50 rounded-3xl transition-transform duration-700 delay-300 ${isRight ? '-rotate-2 group-hover:-rotate-3' : 'rotate-2 group-hover:rotate-3'} ${inView ? 'scale-100 rotate-0' : 'scale-90'}`}></div>
-            <img src={imageUrl} alt={title} className="relative rounded-2xl shadow-2xl object-cover w-full h-96 transition-transform duration-500 group-hover:scale-105" />
+      <div 
+        ref={cardRef}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center transition-transform duration-300 ease-out"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+        }}
+      >
+      {/* UPGRADED: Image Column with Pattern Background */}
+      <div 
+        className={`relative transition-all duration-1000 ease-out group ${isRight ? 'lg:order-last' : ''} ${inView ? 'opacity-100' : 'opacity-0'}`}
+        style={{ transform: 'translateZ(30px)' }} // Pull image forward
+      >
+        <div className={`absolute -inset-4 bg-indigo-50 rounded-3xl transition-transform duration-700 delay-300 ${isRight ? '-rotate-2 group-hover:-rotate-3' : 'rotate-2 group-hover:rotate-3'} ${inView ? 'scale-100 rotate-0' : 'scale-90'}`}></div>
+        <img src={imageUrl} alt={title} className="relative rounded-2xl shadow-2xl object-cover w-full h-96 transition-transform duration-500 group-hover:scale-105" />
+      </div>
+      
+      {/* UPGRADED: Text Column with Inner Card */}
+      <div 
+        className={`transition-all duration-1000 ease-out delay-200 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        style={{ transform: 'translateZ(60px)' }} // Pull text card even more forward
+      >
+        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-gray-100">
+          <h3 className="text-3xl font-bold text-gray-900">{title}</h3>
+          <p className="mt-4 text-lg text-gray-700">{description}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+          {tags.map(tag => (
+            <span key={tag} className="bg-indigo-100 text-indigo-800 text-sm font-medium px-4 py-2 rounded-full">{tag}</span>
+          ))}
+          </div>
+          <div className="inline-block mt-8 text-lg font-semibold text-gray-400 cursor-not-allowed">
+          Full Project Coming Soon...
+          </div>
         </div>
-        
-        {/* --- UPGRADED: Text Column with Inner Card --- */}
-        <div 
-            className={`transition-all duration-1000 ease-out delay-200 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-            style={{ transform: 'translateZ(60px)' }} // Pull text card even more forward
-        >
-            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-3xl font-bold text-gray-900">{title}</h3>
-                <p className="mt-4 text-lg text-gray-700">{description}</p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                {tags.map(tag => (
-                    <span key={tag} className="bg-indigo-100 text-indigo-800 text-sm font-medium px-4 py-2 rounded-full">{tag}</span>
-                ))}
-                </div>
-                <div className="inline-block mt-8 text-lg font-semibold text-gray-400 cursor-not-allowed">
-                Full Project Coming Soon...
-                </div>
-            </div>
-        </div>
-        </div>
+      </div>
+      </div>
     </div>
   );
 };
@@ -141,4 +130,3 @@ function FeaturedProjects() {
 }
 
 export default FeaturedProjects;
-
