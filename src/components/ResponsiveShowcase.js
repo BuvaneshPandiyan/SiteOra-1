@@ -49,9 +49,9 @@ function ResponsiveShowcase() {
   }, []);
 
   return (
-    <section ref={ref} className="bg-gradient-to-b from-white to-gray-100 py-8 md:py-12 overflow-hidden">
+    <section ref={ref} className="bg-gradient-to-b from-white to-gray-100 py-8 md:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-center mb-6 md:mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animated-shine">
             Perfect On Every Screen
           </h2>
@@ -63,7 +63,7 @@ function ResponsiveShowcase() {
         {/* UPGRADED: Device Mockups Container with Parallax */}
         <div 
           ref={showcaseRef}
-          className="relative max-w-6xl mx-auto h-[20rem] md:h-[30rem] flex items-center justify-center transition-transform duration-300 ease-out"
+          className="relative max-w-6xl mx-auto h-[20rem] md:h-[40rem] flex items-center justify-center transition-transform duration-300 ease-out"
           style={{
             transformStyle: 'preserve-3d',
             transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
