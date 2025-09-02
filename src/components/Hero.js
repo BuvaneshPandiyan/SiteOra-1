@@ -83,10 +83,10 @@ function Hero() {
   const whatsappLink = `https://wa.me/7338816479?text=${whatsappMessage}`;
 
   return (
-    // FIX: Removed `pt-24` from this section to prevent the white gap at the top.
+    // FIX: Main section now has NO top padding.
     <section id="home" className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center lg:text-left pb-12">
       
-      {/* Background Carousel */}
+      {/* Background Carousel - This will now start at the very top of the viewport, behind the navbar. */}
       <div className="absolute inset-0 z-0 bg-black">
         {carouselImages.map((src, index) => (
           <img
@@ -101,7 +101,7 @@ function Hero() {
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       </div>
 
-      {/* Hero Content */}
+      {/* Hero Content - Add padding-top here to clear the fixed navbar. Adjust pt-XX to match your navbar's height. */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex-grow flex items-center pt-24">
         <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center w-full">
           <div className="mb-12 lg:mb-0 text-center lg:text-left">
