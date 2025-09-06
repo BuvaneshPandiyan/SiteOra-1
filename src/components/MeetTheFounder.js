@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
-import BuvaneshwaranImage from './Buvaneshwaran.jpg'; // Import the local image
+import BuvaneshwaranImage from './Buvaneshwaran.webp'; // Import the local image
 
 function MeetTheFounder() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
