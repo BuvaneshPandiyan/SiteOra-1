@@ -63,7 +63,7 @@ function Hero() {
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start">
               <a
-                href="#contact"
+                href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-indigo-300"
               >
                 Get Started
@@ -72,7 +72,7 @@ function Hero() {
                 </svg>
               </a>
               <a
-                href="#portfolio"
+                href="/portfolio"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-indigo-700 font-semibold rounded-xl border border-indigo-200 hover:bg-indigo-50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-100"
               >
                 How We Work
