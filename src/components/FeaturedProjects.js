@@ -25,7 +25,7 @@ const projects = [
     link: 'https://siteora.online', 
   },
   {
-    title: 'FionaMakeoverArtistry',
+    title: 'Fiona Artistry',
     description: 'We are currently crafting a bespoke digital portfolio for a leading makeup artist that reflects the elegance of their work. This visually stunning online gallery will showcase their diverse services, from bridal to editorial photoshoots. By blending sophisticated aesthetics with an intuitive user experience, we are building a digital stage that not only displays their artistry but elevates their entire brand.',
     tags: ['Makeup Artistry', 'UI/UX Design', 'In Progress', 'Portfolio'],
     imageUrl: FionaMakeoverArtistryImage,
