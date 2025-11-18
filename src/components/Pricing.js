@@ -270,14 +270,22 @@ function Pricing() {
         <p className={`mb-6 text-sm ${plan.isPopular ? 'text-indigo-200' : 'text-gray-500'}`}>
           {plan.tagline}
         </p>
-        <div className="text-6xl font-extrabold leading-none">
-          <span className={`${plan.isPopular ? 'text-white' : 'text-indigo-600'}`}>
-            {plan.price}
-          </span>
-          <span className={`text-xl font-normal ${plan.isPopular ? 'text-indigo-200' : 'text-gray-500'}`}>
-            {plan.period}
-          </span>
+        
+        {/* ✅ FIX APPLIED HERE: Reduced font size for mobile and made the container flexible */}
+        <div className="flex justify-center items-baseline flex-wrap"> 
+          <div className="text-5xl sm:text-6xl font-extrabold leading-none mr-1">
+            <span className={`${plan.isPopular ? 'text-white' : 'text-indigo-600'}`}>
+              {plan.price}
+            </span>
+          </div>
+          <div className="text-xl font-normal self-end mb-1">
+            <span className={`${plan.isPopular ? 'text-indigo-200' : 'text-gray-500'}`}>
+              {plan.period}
+            </span>
+          </div>
         </div>
+        {/* End Fix */}
+
         <p className={`text-base mt-1 font-semibold ${plan.isPopular ? 'text-white' : 'text-indigo-600'}`}>
           {plan.additionalCost}
         </p>
