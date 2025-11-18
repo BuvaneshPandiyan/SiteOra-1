@@ -12,31 +12,6 @@ import S2SketchesImage from '../assets/images/S2SketchesImage.png';
 
 const projects = [
   {
-    title: 'Genz Millet',
-    description: 'For this health-focused startup, we created an innovative WhatsApp e-commerce solution. To match their budget, we designed a streamlined static site where customers can browse millet products.',
-    tags: ['WhatsApp E-commerce', 'Static Site', 'Small Business Solution', 'React'],
-    imageUrl: GenZMilletImage,
-    align: 'left',
-    link: 'https://genzmillet.store', 
-  },
-  {
-    title: 'Siteora',
-    description: 'We engineered this comprehensive platform to deliver bespoke website creation services directly to customers. This live project powerfully showcases our ability to architect complex web applications.',
-    tags: ['Web Development', 'Live Site', 'React', 'SaaS Platform'],
-    imageUrl: SiteoraImage,
-    align: 'right',
-    link: 'https://siteora.online', 
-  },
-  {
-    title: 'FionaArtistry',
-    description: 'We are currently crafting a bespoke digital portfolio for a leading makeup artist that reflects the elegance of their work.',
-    tags: ['Makeup Artistry', 'UI/UX Design', 'In Progress', 'Portfolio'],
-    imageUrl: FionaMakeoverArtistryImage,
-    align: 'left',
-    link: null, 
-  },
-  // ✅ NEW PROJECT 1: Dred Interiors
-  {
     title: 'Dred Interiors',
     description: 'A sophisticated portfolio and contact site for a premier interior design firm, showcasing their high-end residential and commercial projects.',
     tags: ['Interior Design', 'Portfolio Site', 'Web Development', 'React'],
@@ -53,6 +28,33 @@ const projects = [
     align: 'left',
     link: 'https://s2skteches.com', 
   },
+  {
+    title: 'Siteora',
+    description: 'We engineered this comprehensive platform to deliver bespoke website creation services directly to customers. This live project powerfully showcases our ability to architect complex web applications.',
+    tags: ['Web Development', 'Live Site', 'React', 'SaaS Platform'],
+    imageUrl: SiteoraImage,
+    align: 'right',
+    link: 'https://siteora.online', 
+  },
+  {
+    title: 'Genz Millet',
+    description: 'For this health-focused startup, we created an innovative WhatsApp e-commerce solution. To match their budget, we designed a streamlined static site where customers can browse millet products.',
+    tags: ['WhatsApp E-commerce', 'Static Site', 'Small Business Solution', 'React'],
+    imageUrl: GenZMilletImage,
+    align: 'left',
+    link: 'https://genzmillet.store', 
+  },
+  
+  {
+    title: 'FionaArtistry',
+    description: 'We are currently crafting a bespoke digital portfolio for a leading makeup artist that reflects the elegance of their work.',
+    tags: ['Makeup Artistry', 'UI/UX Design', 'In Progress', 'Portfolio'],
+    imageUrl: FionaMakeoverArtistryImage,
+    align: 'left',
+    link: null, 
+  },
+  // ✅ NEW PROJECT 1: Dred Interiors
+  
 ];
 
 // --- Project Card Component ---
