@@ -62,7 +62,7 @@ function Stats() {
     };
   }, []);
 
-  // Effect for individual card popups based on intersection
+  // Effect for individual card popups based on intersection (Mobile scroll logic)
   useEffect(() => {
     const isMobile = window.innerWidth <= 767; // Define mobile breakpoint
 
@@ -230,16 +230,19 @@ function Stats() {
 
         /* --- Stat Value & Label --- */
         .stat-value {
-          font-size: 3rem; /* Larger value */
+          /* ✅ FIX: Reduced font size to fit inside the box better, matching the image */
+          font-size: 1.75rem; 
           font-weight: 800;
-          margin-bottom: 0.6rem;
+          margin-bottom: 0.4rem; /* Reduced bottom margin */
           color: #1a202c;
-          letter-spacing: -0.03em; /* Tighter letter spacing */
+          letter-spacing: normal; /* Removed negative letter spacing */
           text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* More prominent text shadow */
+          white-space: nowrap; /* Prevent wrapping if possible */
         }
 
         .stat-label {
-          font-size: 1.25rem; /* Larger label */
+          /* ✅ FIX: Reduced font size slightly for better hierarchy */
+          font-size: 1.1rem; 
           color: #4a5568;
           text-transform: uppercase;
           letter-spacing: 0.08em; /* Wider letter spacing for uppercase */

@@ -11,6 +11,7 @@ import PricingPage from './pages/PricingPage';
 import ProcessPage from './pages/ProcessPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import FloatingSocialIcons from './components/FloatingSocialIcons';
 
 // Import Utility
 import ScrollToTop from './utils/ScrollToTop';
@@ -50,6 +51,7 @@ function App() {
           {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Route>
       </Routes>
+   <FloatingSocialIcons /> 
     </BrowserRouter>
   );
 }

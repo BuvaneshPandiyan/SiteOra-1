@@ -36,17 +36,20 @@ function HomePage() {
       <main className="pt-12 overflow-x-hidden">
         {/* Each section is now wrapped with our animation component */}
         <ScrollAnimationWrapper animationType="fadeInUp"><Hero /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="zoomIn"><Clients /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="slideInLeft"><FeaturedServices /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="slideInRight"><WhyChooseUs /></ScrollAnimationWrapper>
+                <ScrollAnimationWrapper animationType="zoomIn"><FeaturedProjects /></ScrollAnimationWrapper>
         <ScrollAnimationWrapper animationType="fadeInUp"><ResponsiveShowcase /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="zoomIn"><FeaturedProjects /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="slideInLeft"><CoreVitalsSection /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="slideInRight"><TechnologyShowcase /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="fadeInUp"><IndustryExpertise /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="zoomIn"><OurSimpleProcess /></ScrollAnimationWrapper>
-        <ScrollAnimationWrapper animationType="slideInLeft"><Testimonials /></ScrollAnimationWrapper>
+        <ScrollAnimationWrapper animationType="slideInRight"><WhyChooseUs /></ScrollAnimationWrapper>
+        <ScrollAnimationWrapper animationType="slideInLeft"><FeaturedServices /></ScrollAnimationWrapper>
         <ScrollAnimationWrapper animationType="slideInRight"><MeetTheFounder /></ScrollAnimationWrapper>
+
+        <ScrollAnimationWrapper animationType="zoomIn"><Clients /></ScrollAnimationWrapper>
+        <ScrollAnimationWrapper animationType="zoomIn"><OurSimpleProcess /></ScrollAnimationWrapper>
+                <ScrollAnimationWrapper animationType="slideInLeft"><CoreVitalsSection /></ScrollAnimationWrapper>
+        <ScrollAnimationWrapper animationType="fadeInUp"><IndustryExpertise /></ScrollAnimationWrapper>
+
+        <ScrollAnimationWrapper animationType="slideInLeft"><Testimonials /></ScrollAnimationWrapper>
+        <ScrollAnimationWrapper animationType="slideInRight"><TechnologyShowcase /></ScrollAnimationWrapper>
+
         <ScrollAnimationWrapper animationType="fadeInUp"><ComparisonTable /></ScrollAnimationWrapper>
         <ScrollAnimationWrapper animationType="zoomIn"><CTA /></ScrollAnimationWrapper>
       </main>
