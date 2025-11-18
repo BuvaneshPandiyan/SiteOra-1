@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+<<<<<<< HEAD
 // NOTE: Make sure you have these images in your assets/images folder.
 import GenZMilletImage from '../assets/images/GenZMilletImage.png';
 import SiteoraImage from '../assets/images/SiteoraImage.png'; 
@@ -9,6 +10,13 @@ import FionaMakeoverArtistryImage from '../assets/images/FionaMakeoverArtistryIm
 // ✅ NEW IMPORTS ADDED
 import DredInteriorsImage from '../assets/images/DredInteriorsImage.png'; 
 import S2SketchesImage from '../assets/images/S2SketchesImage.png'; 
+=======
+// Adding the new image imports. 
+// NOTE: Make sure you have 'SiteoraImage.png' and 'FionaMakeoverArtistryImage.png' in your assets/images folder.
+import GenZMilletImage from '../assets/images/GenZMilletImage.png';
+import SiteoraImage from '../assets/images/SiteoraImage.png'; 
+import FionaMakeoverArtistryImage from '../assets/images/FionaMakeoverArtistryImage.png';
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
 
 const projects = [
     {
@@ -38,11 +46,26 @@ const projects = [
   },
   {
     title: 'Siteora',
+<<<<<<< HEAD
     description: 'We engineered this comprehensive platform to deliver bespoke website creation services directly to customers. This live project powerfully showcases our ability to architect complex web applications.',
+=======
+    description: 'We engineered this comprehensive platform to deliver bespoke website creation services directly to customers. This live project powerfully showcases our ability to architect complex web applications that are deeply intuitive and built on a future-proof, scalable foundation. We ensured flawless, responsive performance across all devices. This project is a testament to our commitment to building powerful, market-ready web solutions.',
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
     tags: ['Web Development', 'Live Site', 'React', 'SaaS Platform'],
     imageUrl: SiteoraImage,
     align: 'right',
     link: 'https://siteora.online', 
+<<<<<<< HEAD
+=======
+  },
+  {
+    title: 'Fiona Artistry',
+    description: 'We are currently crafting a bespoke digital portfolio for a leading makeup artist that reflects the elegance of their work. This visually stunning online gallery will showcase their diverse services, from bridal to editorial photoshoots. By blending sophisticated aesthetics with an intuitive user experience, we are building a digital stage that not only displays their artistry but elevates their entire brand.',
+    tags: ['Makeup Artistry', 'UI/UX Design', 'In Progress', 'Portfolio'],
+    imageUrl: FionaMakeoverArtistryImage,
+    align: 'left',
+    link: null, 
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
   },
   {
     title: 'FionaArtistry',
@@ -56,7 +79,10 @@ const projects = [
 
 ];
 
+<<<<<<< HEAD
 // --- Project Card Component ---
+=======
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
 const ProjectCard = ({ title, description, tags, imageUrl, align, link }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.25 });
   const isRight = align === 'right';
@@ -102,12 +128,17 @@ const ProjectCard = ({ title, description, tags, imageUrl, align, link }) => {
     <div ref={ref}>
       <div 
         ref={cardRef}
+<<<<<<< HEAD
         className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-stretch transition-transform duration-300 ease-out"
+=======
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch transition-transform duration-300 ease-out"
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
         style={{ 
           transformStyle: 'preserve-3d',
           transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
         }}
       >
+<<<<<<< HEAD
         {/* Image Container (2/3 width on desktop, full width on mobile) */}
         <div 
           className={`relative transition-all duration-1000 ease-out group lg:col-span-2 ${isRight ? 'lg:order-last' : ''} ${inView ? 'opacity-100' : 'opacity-0'}`}
@@ -133,6 +164,24 @@ const ProjectCard = ({ title, description, tags, imageUrl, align, link }) => {
           <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg flex flex-col h-auto lg:h-full">
             
             <div className="flex-1 overflow-y-auto pr-4"> 
+=======
+        <div 
+          className={`relative transition-all duration-1000 ease-out group ${isRight ? 'lg:order-last' : ''} ${inView ? 'opacity-100' : 'opacity-0'}`}
+          style={{ transform: 'translateZ(30px)' }}
+        >
+          <div className={`absolute -inset-4 bg-indigo-50 rounded-3xl transition-transform duration-700 delay-300 ${isRight ? '-rotate-2 group-hover:-rotate-3' : 'rotate-2 group-hover:rotate-3'} ${inView ? 'scale-100 rotate-0' : 'scale-90'}`}></div>
+          {/* --- MODIFICATION 1: Image height increased for a bigger card --- */}
+          <img src={imageUrl} alt={title} className="relative rounded-2xl shadow-2xl object-cover w-full h-[500px] transition-transform duration-500 group-hover:scale-105" />
+        </div>
+        
+        <div 
+          className={`transition-all duration-1000 ease-out delay-200 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          style={{ transform: 'translateZ(60px)' }}
+        >
+          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col">
+            {/* --- MODIFICATION 2: This content area now scrolls if text is too long --- */}
+            <div className="flex-1 overflow-y-auto pr-4">
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
               <h3 className="text-3xl font-bold text-gray-900">{title}</h3>
               <p className="mt-4 text-lg text-gray-700">{description}</p>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -142,6 +191,10 @@ const ProjectCard = ({ title, description, tags, imageUrl, align, link }) => {
               </div>
             </div>
             
+<<<<<<< HEAD
+=======
+            {/* --- MODIFICATION 3: This block is pushed to the bottom and won't shrink --- */}
+>>>>>>> 2ccdcdcf2b4f104d5ccd5ee8a8e82de75db3ff8c
             <div className="flex-shrink-0 pt-6">
               {link ? (
                 <a
