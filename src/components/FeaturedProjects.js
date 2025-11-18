@@ -8,7 +8,7 @@ import FionaMakeoverArtistryImage from '../assets/images/FionaMakeoverArtistryIm
 
 // ✅ NEW IMPORTS ADDED
 import DredInteriorsImage from '../assets/images/DredInteriorsImage.png'; 
-import S2SketchesImage from '../assets/images/S2SkecthesImage.png'; 
+import S2SketchesImage from '../assets/images/S2SketchesImage.png'; 
 
 const projects = [
   {
