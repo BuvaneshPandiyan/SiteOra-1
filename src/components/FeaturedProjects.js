@@ -26,7 +26,7 @@ const projects = [
     tags: ['Portrait Artistry', 'Digital Portfolio', 'Small Business', 'E-commerce'],
     imageUrl: S2SketchesImage,
     align: 'left',
-    link: 'https://s2skteches.com', 
+    link: 'https://s2sketches.com', 
   },
   {
     title: 'Siteora',
