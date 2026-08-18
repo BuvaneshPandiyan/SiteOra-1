@@ -34,7 +34,7 @@ const projects = [
     tags: ['Web Development', 'Live Site', 'React', 'SaaS Platform'],
     imageUrl: SiteoraImage,
     align: 'right',
-    link: 'https://siteora.online', 
+    link: 'https://siteora.site', 
   },
   {
     title: 'Genz Millet',
